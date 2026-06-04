@@ -27,7 +27,7 @@ h1{font-size:17px;font-weight:600;color:#1a365d;margin-bottom:.75rem;display:fle
 .btn-rst{border-color:#FCA5A5;color:#B91C1C;}
 .pbar{height:4px;background:#F3F4F6;border-radius:99px;overflow:hidden;margin-bottom:3px;}
 .pfill{height:100%;background:linear-gradient(90deg,#185FA5,#1D9E75);border-radius:99px;transition:width .3s;}
-.toast{border-radius:8px;padding:9px 16px;font-size:13px;margin-bottom:.75rem;display:none;font-weight:500;}
+.toast{border-radius:8px;padding:9px 16px;font-size:13px;margin-bottom:.75rem;display:none;font-weight:500;position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.15);}
 .tok{background:#D1FAE5;color:#065F46;border:0.5px solid #6EE7B7;}
 .ter{background:#FEE2E2;color:#991B1B;border:0.5px solid #FCA5A5;}
 .tin{background:#DBEAFE;color:#1D4ED8;border:0.5px solid #93C5FD;}
@@ -36,16 +36,24 @@ h1{font-size:17px;font-weight:600;color:#1a365d;margin-bottom:.75rem;display:fle
 .ld{width:11px;height:11px;border-radius:3px;flex-shrink:0;}
 .venue{background:#fff;border:0.5px solid #E5E7EB;border-radius:12px;padding:1rem;overflow-x:auto;margin-bottom:1rem;width:100%;}
 .stage{text-align:center;font-size:11px;color:#9CA3AF;letter-spacing:2px;border:0.5px solid #E5E7EB;border-radius:6px;padding:4px;margin-bottom:.6rem;}
+
+/* ── 方陣專屬樣式 ── */
 .zone-header-row{display:flex;margin-bottom:4px;padding-left:26px;width:100%;}
 .zh{text-align:center;font-size:10px;font-weight:600;padding:2px 0;border-radius:4px;}
 .zh-a{color:#185FA5;background:#DBEAFE;}.zh-b{color:#065F46;background:#D1FAE5;}.zh-c{color:#92400E;background:#FEF3C7;}
-.zh-gap{flex-shrink:0;}
 .vrow{display:flex;align-items:center;gap:0;margin-bottom:2px;width:100%;}
 .rl{font-size:10px;color:#9CA3AF;width:24px;text-align:right;flex-shrink:0;padding-right:4px;}
 .vzone{display:flex;}
-.seat-gap{flex-shrink:0;}
-.seat{height:26px;border-radius:4px;cursor:pointer;font-size:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:0.5px solid;transition:transform .1s;overflow:hidden;}
-.seat:hover{transform:scale(1.08);z-index:2;position:relative;}
+
+/* ── 圓桌專屬樣式 ── */
+.round-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; padding: 20px 0; }
+.round-table-wrap { position: relative; width: 150px; height: 150px; }
+.round-table-center { position: absolute; inset: 24px; background: #E5E7EB; border: 2px solid #D1D5DB; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; color: #4B5563; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+.round-seat { position: absolute; width: 30px; height: 30px; border-radius: 50%; font-size: 10px; }
+
+/* ── 座位共用樣式 ── */
+.seat{height:26px;border-radius:4px;cursor:pointer;font-size:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:0.5px solid;transition:all .15s;overflow:hidden;}
+.seat:hover{transform:scale(1.15);z-index:2;position:relative;}
 .sa{background:#E6F1FB;border-color:#85B7EB;color:#185FA5;}
 .sb{background:#E1F5EE;border-color:#5DCAA5;color:#0F6E56;}
 .sc{background:#FAEEDA;border-color:#EF9F27;color:#854F0B;}
@@ -53,13 +61,14 @@ h1{font-size:17px;font-weight:600;color:#1a365d;margin-bottom:.75rem;display:fle
 .sb.filled{background:#1D9E75;border-color:#0F6E56;color:#fff;cursor:grab;}
 .sc.filled{background:#BA7517;border-color:#854F0B;color:#fff;cursor:grab;}
 .seat.filled:active{cursor:grabbing;}
-.seat.drag-over{transform:scale(1.12);box-shadow:0 0 0 2px #F59E0B;z-index:5;}
+.seat.drag-over{transform:scale(1.2);box-shadow:0 0 0 3px #F59E0B;z-index:5;}
 .seat.drag-src{opacity:.35;}
 .seat.ceremony{background:#E11D48!important;border-color:#9F1239!important;color:#fff!important;}
 .seat.photo{background:#F59E0B!important;border-color:#B45309!important;color:#fff!important;}
 .seat.occupied{background:#6366F1!important;border-color:#4338CA!important;color:#fff!important;}
-.seat.found{background:#FEF08A!important;border-color:#CA8A04!important;color:#713F12!important;box-shadow:0 0 0 2px #FDE047;animation:findpulse 1s ease-in-out 2;}
-@keyframes findpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18);box-shadow:0 0 0 4px #FDE047;}}
+.seat.found{background:#FEF08A!important;border-color:#CA8A04!important;color:#713F12!important;box-shadow:0 0 0 3px #FDE047;animation:findpulse 1s ease-in-out 2;}
+@keyframes findpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.2);box-shadow:0 0 0 5px #FDE047;}}
+
 .panel{background:#fff;border:0.5px solid #E5E7EB;border-radius:12px;padding:12px;margin-bottom:1rem;}
 .panel-hdr{font-size:12px;font-weight:600;color:#111;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
 .count{font-size:10px;background:#F3F4F6;color:#6B7280;padding:1px 7px;border-radius:99px;font-weight:400;}
@@ -73,8 +82,7 @@ h1{font-size:17px;font-weight:600;color:#1a365d;margin-bottom:.75rem;display:fle
 .chip-x{position:absolute;right:5px;top:50%;transform:translateY(-50%);width:14px;height:14px;border-radius:50%;background:#CBD5E1;color:#fff;font-size:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;padding:0;line-height:1;}
 .chip-x:hover{background:#EF4444;}
 select.gs{font-size:12px;width:100%;padding:6px 8px;border-radius:6px;border:0.5px solid #E5E7EB;background:#F9FAFB;color:#111;margin-bottom:6px;outline:none;}
-.bz{font-size:10px;padding:1px 6px;border-radius:4px;margin-right:4px;}
-.bza{background:#E6F1FB;color:#0C447C;}.bzb{background:#E1F5EE;color:#085041;}.bzc{background:#FAEEDA;color:#633806;}
+
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:100;display:none;align-items:flex-end;justify-content:center;}
 .modal-bg.show{display:flex;}
 .modal{background:#fff;border-radius:16px 16px 0 0;width:100%;max-width:520px;padding:20px 16px 28px;}
@@ -91,7 +99,7 @@ select.gs{font-size:12px;width:100%;padding:6px 8px;border-radius:6px;border:0.5
 .tag-btn.occ-btn{border-color:#6366F1;background:#EEF2FF;color:#4338CA;}
 .tag-btn.occ-btn.active{background:#6366F1;color:#fff;}
 .modal-close{width:100%;padding:10px;background:#F3F4F6;color:#374151;border:none;border-radius:10px;font-size:13px;cursor:pointer;margin-top:4px;}
-#dtt{position:fixed;pointer-events:none;z-index:9999;background:#1e293b;color:#fff;font-size:12px;padding:5px 10px;border-radius:6px;white-space:nowrap;display:none;max-width:220px;overflow:hidden;text-overflow:ellipsis;}
+#dtt{position:fixed;pointer-events:none;z-index:9999;background:#1e293b;color:#fff;font-size:12px;padding:5px 10px;border-radius:6px;white-space:nowrap;display:none;max-width:220px;overflow:hidden;}
 </style>
 </head>
 <body>
@@ -119,21 +127,20 @@ select.gs{font-size:12px;width:100%;padding:6px 8px;border-radius:6px;border:0.5
   </div>
 </div>
 
-<h1>🎟 2026 COMPUTEX 前台
+<h1>🎟 2026 前台座位系統
   <div class="sync-dot off" id="sync-dot"></div>
   <span class="sync-lbl" id="sync-lbl">連線中...</span>
 </h1>
 <div class="top">
   <div class="stats">
-    <div class="stat"><span class="sv">210</span><span class="sl">總席數</span></div>
+    <div class="stat"><span class="sv" id="st-total">0</span><span class="sl">總席數</span></div>
     <div class="stat"><span class="sv" id="sa">0</span><span class="sl">已分配</span></div>
-    <div class="stat"><span class="sv" id="se">210</span><span class="sl">空位</span></div>
+    <div class="stat"><span class="sv" id="se">0</span><span class="sl">空位</span></div>
     <div class="stat"><span class="sv" id="sg">0</span><span class="sl">賓客</span></div>
   </div>
   <div class="btns">
     <button class="btn btn-ex" id="exbtn" onclick="doExport()">⬇ 匯出 XLSX</button>
-    <button class="btn btn-map" id="mapbtn" onclick="doExportMap()">🗺 席次圖</button>
-
+    <button class="btn btn-rst" onclick="doReset()">⚠️ 重置清除</button>
   </div>
 </div>
 <div class="pbar"><div class="pfill" id="pf" style="width:0%"></div></div>
@@ -146,15 +153,11 @@ select.gs{font-size:12px;width:100%;padding:6px 8px;border-radius:6px;border:0.5
   <div class="leg"><div class="ld" style="background:#F59E0B;border:0.5px solid #B45309;"></div>合影</div>
   <div class="leg"><div class="ld" style="background:#6366F1;border:0.5px solid #4338CA;"></div>佔用</div>
   <span style="color:#D1D5DB;">|</span>
-  <div class="leg"><div class="ld" style="background:#E6F1FB;border:0.5px solid #85B7EB;"></div>A空</div>
-  <div class="leg"><div class="ld" style="background:#E1F5EE;border:0.5px solid #5DCAA5;"></div>B空</div>
-  <div class="leg"><div class="ld" style="background:#FAEEDA;border:0.5px solid #EF9F27;"></div>C空</div>
-  <span style="font-size:10px;color:#9CA3AF;">✦ 拖曳分配 · 點座位標記揭幕/合影/佔用</span>
+  <span style="font-size:10px;color:#9CA3AF;">✦ 拖曳分配 · 點選標記</span>
 </div>
 
 <div class="venue" id="venue-wrap">
-  <div class="stage">STAGE / 舞台</div>
-  <div class="zone-header-row" id="zone-hdr"></div>
+  <div class="stage">STAGE / 舞台 (資料載入中...)</div>
   <div id="vr"></div>
 </div>
 
@@ -167,7 +170,7 @@ select.gs{font-size:12px;width:100%;padding:6px 8px;border-radius:6px;border:0.5
     </div>
     <div class="sr" style="margin-bottom:0;">
       <span style="font-size:11px;color:#9CA3AF;white-space:nowrap;align-self:center;">➕ 新增</span>
-      <input type="text" id="gi" placeholder="輸入新賓客名字，按 Enter 或點新增" onkeydown="if(event.key==='Enter')addGuest()" />
+      <input type="text" id="gi" placeholder="輸入新賓客名字，按 Enter" onkeydown="if(event.key==='Enter')addGuest()" />
       <button class="btn" onclick="addGuest()">新增</button>
     </div>
   </div>
@@ -179,27 +182,20 @@ select.gs{font-size:12px;width:100%;padding:6px 8px;border-radius:6px;border:0.5
 import{initializeApp}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import{getDatabase,ref,onValue,set}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
 
-const fb=initializeApp({apiKey:"AIzaSyB9H0Pc0_ecOmbF0zvwBW2S0JNQnn4lefg",authDomain:"computex20260602.firebaseapp.com",databaseURL:"https://computex20260602-default-rtdb.firebaseio.com",projectId:"computex20260602",storageBucket:"computex20260602.firebasestorage.app",messagingSenderId:"111696785290",appId:"1:111696785290:web:41a67c52f1a3363ab7e273"});
+const fb=initializeApp({apiKey:"AIzaSyB9H0Pc0_ecOmbF0zvwBW2S0JNQnn4lefg",authDomain:"computex20260602.firebaseapp.com",databaseURL:"https://computex20260602-default-rtdb.firebaseio.com",projectId:"computex20260602",storageBucket:"computex20260602.firebasestorage.app"});
 const db=getDatabase(fb);
 const masterRef=ref(db,'seats_master2026');
 const assignRef=ref(db,'assignments2026');
 const tagsRef=ref(db,'tags2026');
 const occRef=ref(db,'seats2026');
 
-const ROWS=10,ZS=[6,9,6],ZK=['A','B','C'],ZN=['A 區（左）','B 區（中）','C 區（右）'];
-const FALLBACK={"A1-1": "貝里斯大使館 H.E. Ambassador Katherine Meighan", "A1-2": "巴拉圭共和國大使館 Dra. Gisele Mousques de Filartiga", "A1-3": "巴拉圭共和國大使館 H.E. Ambassador Darío Filártiga Ruiz Díaz", "A1-4": "聖克里斯多福及尼維斯大使館 H.E. Ambassador Donya Lynex Francis", "A1-5": "神盾集團羅森洲董事長", "A1-6": "財團法人資訊工業策進會黃仲銘董事長", "B1-1": "台灣艾司摩爾科技汪佳慧副總裁暨台灣區總經理", "B1-2": "經濟部國際貿易署劉威廉署長", "B1-3": "經濟部龔明鑫部長", "B1-4": "中華民國對外貿易發展協會黃志芳董事長", "B1-5": "中華民國賴清德總統", "B1-6": "行政院卓榮泰院長", "B1-7": "台北市電腦商業同業公會陳俊聖理事長", "B1-8": "數位發展部林宜敬部長", "B1-9": "國家科學及技術委員會吳誠文主任委員", "C1-1": "中華民國總統府沈榮津資政", "C1-2": "經濟部產業發展署邱求慧署長", "C1-3": "數位發展部數位產業署林俊秀署長", "C1-4": "台北市電腦公會理監事LINE台灣連線陳立人董事長兼執行長", "C1-5": "台北市電腦公會理監事立寶電子許勝豪董事長", "C1-6": "台北市電腦公會杜全昌總幹事", "A2-1": "中華民國對外貿易發展協會邱揮立副秘書長", "A2-2": "沙烏地阿拉伯商務辦事處 Mr. Mohammed Sadi A. Alghamdi Representative", "A2-3": "歐洲經貿辦事處 Mr. Lutz Guellner Head of Office", "A2-4": "德國在台協會 Mr. Karsten Tietz Director General", "A2-5": "嘉惠集團喬培偉總裁", "A2-6": "台北市進出口商業同業公會黃教漳理事長", "B2-1": "中華民國對外貿易發展協會周秀隆副秘書長", "B2-2": "印度－台北協會 Mr. Ninad Deshpande Director General", "B2-3": "匈牙利貿易辦事處 Ms. Tamara Vér Representative", "B2-4": "索馬利蘭共和國駐台灣代表處 H.E. Ambassador Mahmoud Adam Jama Galaal", "B2-5": "保留席1", "B2-6": "保留席2", "B2-7": "馬來西亞友誼及貿易中心 Ms. Aznifah Ghani President/Representative", "B2-8": "駐台汶萊貿易旅遊代表處 Ms. Sia Ai Ching Representative", "B2-9": "中華民國對外貿易發展協會陳昱凱副董事長", "C2-1": "群聯電子股份有限公司竹南分公司潘建成創辦人暨執行長", "C2-2": "美商英特爾亞太科技有限公司台灣分公司Hurley, Michael ASenior Vice President", "C2-3": "瑞昱半導體股份有限公司郭協星副總經理", "C2-4": "義隆電子股份有限公司葉儀晧董事長兼總經理", "C2-5": "祥碩科技股份有限公司林哲偉總經理", "C2-6": "香港商輝達香港控股有限公司台灣分公司李文如副總裁", "A3-1": "法國在台協會 Mr. Franck Paris Director", "A3-2": "奈及利亞駐台北商務辦事處 Mr. Relicx T. Shiolban Acting Trade Commissioner", "A3-3": "日本台灣交流協會台北事務所 Mr. Gen Kawai Deputy Representative", "A3-4": "加拿大駐台北貿易辦事處 Mr. Jordan Turley Acting Director", "A3-5": "財團法人國家實驗研究院徐玉學博士營運長", "A3-6": "科絡達吳伯儀執行長", "B3-1": "駐台汶萊貿易旅遊代表處Ms. Sia Ai Ching Representative", "B3-2": "駐台北烏蘭巴托貿易經濟代表處 Mr. Tumurbaatar Gankhuyag Representative", "B3-3": "英國在台辦事處 Ms. Ruth Bradley-Jones Representative", "B3-4": "盧森堡台北辦事處 Mr. Lex Kaufhold Executive Director", "B3-5": "泰國貿易經濟辦事處 Mr. Narong Boonsatheanwong Executive Director", "B3-6": "澳洲辦事處Mr. Robert Niel FergussonRepresentative", "B3-7": "義大利經濟貿易文化推廣辦事處 Mr. Marco Lombardi Representative", "B3-8": "荷蘭在台辦事處Mr. Bastiaan Cornelis Maria PullesRepresentative", "B3-9": "荷蘭外交部國際企業司司長Ms. Anne Le Guellec", "C3-1": "聯發科技股份有限公司許皓鈞副總經理", "C3-2": "台達電子工業股份有限公司林祺斌風扇暨熱傳導事業群副總經理", "C3-3": "微星科技股份有限公司楊勝智協理", "C3-4": "華碩電腦股份有限公司曹國維協理", "C3-5": "台灣夏普股份有限公司蕭家昕行銷長", "C3-6": "中美萬泰科技股份有限公司邱宏彥執行長", "A4-1": "台湾双日股份有限公司安達祐司董事長兼總經理", "A4-2": "台灣豐田通商股份有限公司脇康弘總經理", "A4-3": "台灣丸紅股份有限公司相馬伸一郎董事長兼總經理", "A4-4": "台灣三菱商事股份有限公司三田地肇董事長兼總經理", "A4-5": "台湾伊藤忠股份有限公司桐山寛史董事長", "A4-6": "保留席3", "B4-1": "紐西蘭商工辦事處 Mr. Chris Langley Director", "B4-2": "約旦商務辦事處 Ms. Ekram Alsukkar Director", "B4-3": "比利時台北辦事處 Mr. Matthieu Branders Director", "B4-4": "帛琉共和國大使館 Mr. Nathan Salvador First Secretary", "B4-5": "馬來西亞友誼及貿易中心 Ms. Izzati Aisyah Adnan Deputy Representative", "B4-6": "駐臺北韓國代表部 Mr. Koh Sang-Wook Acting Representative", "B4-7": "智利商務辦事處 Mr. Fernando Schmidt Director", "B4-8": "波蘭臺北辦事處 Mr. Janusz Bilski Director", "B4-9": "保留席5", "C4-1": "台北市電腦公會張笠資深副總幹事", "C4-2": "台北市電腦公會張永美資深副總幹事", "C4-3": "台北市電腦公會黃鋆鋇資深副總幹事", "C4-4": "達擎股份有限公司吳宜芳董事長暨總經理", "C4-5": "台達電子工業股份有限公司蔣安傑資通訊基礎設施事業群副總經理", "C4-6": "威剛科技股份有限公司蔡仕皇資深處長", "A5-1": "双日株式会社木下友暉 Assistant Manager", "A5-2": "台灣丸紅股份有限公司凃孝睿戰略企劃部副部長", "A5-3": "台灣丸紅股份有限公司大西裕明董事兼副總經理", "A5-4": "台湾伊藤忠股份有限公司長田佳史情報金融部課長", "A5-5": "台灣住友商事股份有限公司陳瞻取部長", "A5-6": "保留席4", "B5-1": "KOTRA Mr. Han Suk Woo Director General", "B5-2": "高陽市產業振興院 Mr. Han Dong Gyun President", "B5-3": "阿曼王國駐台北商務辦事處 Mr. Mohammed Al-Baraami Director", "B5-4": "科技、民主與社會研究中心(DSET)張智程執行長", "B5-5": "中華航空股份有限公司高星潢董事長", "B5-6": "臺灣證券交易所李愛玲總經理", "B5-7": "Qualcomm洪悅容公共事務總監", "B5-8": "經濟部國際貿易署楊佳憲組長", "B5-9": "保留席6", "C5-1": "永續設計獎銅獎廠商1", "C5-2": "永續設計獎銀獎廠商1", "C5-3": "永續設計獎金獎廠商1", "C5-4": "永續設計獎金獎廠商", "C5-5": "永續設計獎銀獎廠商", "C5-6": "永續設計獎銅獎廠商", "A6-1": "巴拉圭共和國大使館李昌鼎大使特助", "A6-2": "巴拉圭共和國大使館 Diego Alcaraz Assistant and Translator", "A6-3": "巴拉圭共和國大使館 Ms. Camila Filartiga", "A6-4": "斯洛伐克經濟文化辦事處 Mr. Valer Vanco Executive Assistant", "A6-5": "奈及利亞駐台北商務辦事處 Mr. Eric Lin Marketing Specialist", "A6-6": "駐臺北韓國代表部李正律科長", "B6-1": "KOTRA Taipei Mr. Wonsuk Choi Deputy Director", "B6-2": "駐台北印尼經濟貿易代表處 Mr. Eko Wijanarko Director of Investment", "B6-3": "馬尼拉經濟文化辦事處 Mr. Terry Lin Investment Officer", "B6-4": "義大利經濟貿易文化推廣辦事處 Mr. Robert Della Sala Head of Consular", "B6-5": "中華航空股份有限公司陳漢銘總經理", "B6-6": "歐洲經貿辦事處 Mr. Christoph Saurenbach Head of Trade Section", "B6-7": "歐洲經貿辦事處 Ms. Angela Hsiao Senior Policy Officer", "B6-8": "加拿大駐台北貿易辦事處 Ms. Sonia Lee Trade Commissioner-ICT", "B6-9": "中華民國對外貿易發展協會李牮斯顧問", "C6-1": "Arizona Commerce Authority Sandra Watson President", "C6-2": "Arizona Commerce Authority Fernando Garcia Executive Vice President", "C6-3": "Arizona Commerce Authority Ryan Ruiz Executive Vice President", "C6-4": "Arizona Chamber Danny Seiden President", "C6-5": "Arizona Trade & Investment Office-Taiwan Steve Hsu Executive Director", "C6-6": "台北市電腦公會楊櫻姿 副總幹事", "A7-3": "財團法人資訊工業策進會温敏卉董事長秘書", "A7-4": "駐臺北韓國代表部李夏民研究員", "A7-5": "阿曼王國駐台北商務辦事處 Ms. Joanna Kuo PR & Marketing Manager", "A7-6": "約旦商務辦事處 Mr. Hope Lee Secretary", "B7-3": "臺灣臺北地方檢察署黃惠玲檢察官", "B7-4": "海洋委員會海巡署許啓業企劃組長", "B7-5": "勞動部鄒子廉主任祕書", "B7-6": "教育部陳素芬參事", "B7-7": "國立故宮博物院謝俊科數位資訊室主任", "B7-8": "財團法人伊甸社會福利基金會陳智宏處長", "B7-9": "長榮航空股份有限公司曾義唐協理", "C7-1": "BC評審團代表何寶中召集人", "C7-2": "BC評審團代表林心恬委員", "C7-3": "永續設計獎評審團代表劉舜仁評審長", "C7-4": "永續設計獎評審團代表吳於軒委員", "C7-5": "永續設計獎評審團代表張麗寶委員", "C7-6": "保留", "B8-1": "胡志明市電腦協會(HCA) Mr. Lam Nguyen Hai Long Chairman", "B8-2": "FITAG Mr. Alok Ghelani Past President", "B8-3": "FITAG Mr. Alpesh Gevariya President", "B8-4": "FAIITA Mr. Praful Desai Vice President", "B8-5": "香港電腦商會王志強主席", "B8-6": "澳門電腦商會姚建池會長", "C8-1": "永續設計獎評審團代表王斌鶴委員", "C8-3": "台北市電腦公會吳文榮副總幹事", "C8-4": "台北市電腦公會林淑華副總幹事", "C8-5": "台北市電腦公會黃益豐副總幹事", "C8-6": "中華民國電腦技能基金會許基文副秘書長", "B9-1": "外媒1", "B9-2": "外媒2", "B9-3": "外媒3", "B9-4": "外媒4", "B9-5": "外媒5", "B9-6": "外媒6", "B9-8": "國際貿易署1", "B9-9": "國際貿易署2", "A10-1": "媒體1", "A10-2": "媒體2", "A10-3": "媒體3", "A10-4": "媒體4", "A10-5": "媒體5", "A10-6": "媒體6", "B10-1": "媒體7", "B10-2": "媒體8", "B10-3": "媒體9", "B10-4": "媒體10", "B10-5": "媒體11", "B10-6": "媒體12", "B10-7": "媒體13", "B10-8": "GROUP.G1", "B10-9": "GROUP.G2"};
-const FALLBACK_GUESTS=["Arizona Chamber Danny Seiden President", "Arizona Commerce Authority Fernando Garcia Executive Vice President", "Arizona Commerce Authority Ryan Ruiz Executive Vice President", "Arizona Commerce Authority Sandra Watson President", "Arizona Trade & Investment Office-Taiwan Steve Hsu Executive Director", "BC評審團代表何寶中召集人", "BC評審團代表林心恬委員", "FAIITA Mr. Praful Desai Vice President", "FITAG Mr. Alok Ghelani Past President", "FITAG Mr. Alpesh Gevariya President", "KOTRA Mr. Han Suk Woo Director General", "KOTRA Taipei Mr. Wonsuk Choi Deputy Director", "Qualcomm洪悅容公共事務總監", "中美萬泰科技股份有限公司邱宏彥執行長", "中華民國對外貿易發展協會周秀隆副秘書長", "中華民國對外貿易發展協會李牮斯顧問", "中華民國對外貿易發展協會邱揮立副秘書長", "中華民國對外貿易發展協會陳昱凱副董事長", "中華民國對外貿易發展協會黃志芳董事長", "中華民國總統府沈榮津資政", "中華民國賴清德總統", "中華民國電腦技能基金會許基文副秘書長", "中華航空股份有限公司陳漢銘總經理", "中華航空股份有限公司高星潢董事長", "保留", "加拿大駐台北貿易辦事處 Mr. Jordan Turley Acting Director", "加拿大駐台北貿易辦事處 Ms. Sonia Lee Trade Commissioner-ICT", "勞動部鄒子廉主任祕書", "匈牙利貿易辦事處 Ms. Tamara Vér Representative", "印度－台北協會 Mr. Ninad Deshpande Director General", "双日株式会社木下友暉 Assistant Manager", "台北市進出口商業同業公會黃教漳理事長", "台北市電腦公會吳文榮副總幹事", "台北市電腦公會張永美資深副總幹事", "台北市電腦公會張笠資深副總幹事", "台北市電腦公會杜全昌總幹事", "台北市電腦公會林淑華副總幹事", "台北市電腦公會楊櫻姿 副總幹事", "台北市電腦公會理監事LINE台灣連線陳立人董事長兼執行長", "台北市電腦公會理監事立寶電子許勝豪董事長", "台北市電腦公會黃益豐副總幹事", "台北市電腦公會黃鋆鋇資深副總幹事", "台北市電腦商業同業公會陳俊聖理事長", "台湾伊藤忠股份有限公司桐山寛史董事長", "台湾伊藤忠股份有限公司長田佳史情報金融部課長", "台湾双日股份有限公司安達祐司董事長兼總經理", "台灣三菱商事股份有限公司三田地肇董事長兼總經理", "台灣丸紅股份有限公司凃孝睿戰略企劃部副部長", "台灣丸紅股份有限公司大西裕明董事兼副總經理", "台灣丸紅股份有限公司相馬伸一郎董事長兼總經理", "台灣住友商事股份有限公司陳瞻取部長", "台灣夏普股份有限公司蕭家昕行銷長", "台灣艾司摩爾科技汪佳慧副總裁暨台灣區總經理", "台灣豐田通商股份有限公司脇康弘總經理", "台達電子工業股份有限公司林祺斌風扇暨熱傳導事業群副總經理", "台達電子工業股份有限公司蔣安傑資通訊基礎設施事業群副總經理", "嘉惠集團喬培偉總裁", "國家科學及技術委員會吳誠文主任委員", "國立故宮博物院謝俊科數位資訊室主任", "奈及利亞駐台北商務辦事處 Mr. Eric Lin Marketing Specialist", "奈及利亞駐台北商務辦事處 Mr. Relicx T. Shiolban Acting Trade Commissioner", "威剛科技股份有限公司蔡仕皇資深處長", "巴拉圭共和國大使館 Diego Alcaraz Assistant and Translator", "巴拉圭共和國大使館 Dra. Gisele Mousques de Filartiga", "巴拉圭共和國大使館 H.E. Ambassador Darío Filártiga Ruiz Díaz", "巴拉圭共和國大使館 Ms. Camila Filartiga", "巴拉圭共和國大使館李昌鼎大使特助", "帛琉共和國大使館 Mr. Nathan Salvador First Secretary", "微星科技股份有限公司楊勝智協理", "德國在台協會 Mr. Karsten Tietz Director General", "教育部陳素芬參事", "數位發展部數位產業署林俊秀署長", "數位發展部林宜敬部長", "斯洛伐克經濟文化辦事處 Mr. Valer Vanco Executive Assistant", "日本台灣交流協會台北事務所 Mr. Gen Kawai Deputy Representative", "智利商務辦事處 Mr. Fernando Schmidt Director", "歐洲經貿辦事處 Mr. Christoph Saurenbach Head of Trade Section", "歐洲經貿辦事處 Mr. Lutz Guellner Head of Office", "歐洲經貿辦事處 Ms. Angela Hsiao Senior Policy Officer", "比利時台北辦事處 Mr. Matthieu Branders Director", "永續設計獎評審團代表劉舜仁評審長", "永續設計獎評審團代表吳於軒委員", "永續設計獎評審團代表張麗寶委員", "永續設計獎評審團代表王斌鶴委員", "永續設計獎金獎廠商", "永續設計獎金獎廠商1", "永續設計獎銀獎廠商", "永續設計獎銀獎廠商1", "永續設計獎銅獎廠商", "永續設計獎銅獎廠商1", "沙烏地阿拉伯商務辦事處 Mr. Mohammed Sadi A. Alghamdi Representative", "法國在台協會 Mr. Franck Paris Director", "波蘭臺北辦事處 Mr. Janusz Bilski Director", "泰國貿易經濟辦事處 Mr. Narong Boonsatheanwong Executive Director", "海洋委員會海巡署許啓業企劃組長", "澳洲辦事處Mr. Robert Niel FergussonRepresentative", "澳門電腦商會姚建池會長", "瑞昱半導體股份有限公司郭協星副總經理", "盧森堡台北辦事處 Mr. Lex Kaufhold Executive Director", "神盾集團羅森洲董事長", "祥碩科技股份有限公司林哲偉總經理", "科技、民主與社會研究中心(DSET)張智程執行長", "科絡達吳伯儀執行長", "約旦商務辦事處 Mr. Hope Lee Secretary", "約旦商務辦事處 Ms. Ekram Alsukkar Director", "紐西蘭商工辦事處 Mr. Chris Langley Director", "索馬利蘭共和國駐台灣代表處 H.E. Ambassador Mahmoud Adam Jama Galaal", "經濟部國際貿易署劉威廉署長", "經濟部國際貿易署楊佳憲組長", "經濟部產業發展署邱求慧署長", "經濟部龔明鑫部長", "美商英特爾亞太科技有限公司台灣分公司Hurley, Michael ASenior Vice President", "群聯電子股份有限公司竹南分公司潘建成創辦人暨執行長", "義大利經濟貿易文化推廣辦事處 Mr. Marco Lombardi Representative", "義大利經濟貿易文化推廣辦事處 Mr. Robert Della Sala Head of Consular", "義隆電子股份有限公司葉儀晧董事長兼總經理", "聖克里斯多福及尼維斯大使館 H.E. Ambassador Donya Lynex Francis", "聯發科技股份有限公司許皓鈞副總經理", "胡志明市電腦協會(HCA) Mr. Lam Nguyen Hai Long Chairman", "臺灣臺北地方檢察署黃惠玲檢察官", "臺灣證券交易所李愛玲總經理", "英國在台辦事處 Ms. Ruth Bradley-Jones Representative", "荷蘭在台辦事處Mr. Bastiaan Cornelis Maria PullesRepresentative", "荷蘭外交部國際企業司司長Ms. Anne Le Guellec", "華碩電腦股份有限公司曹國維協理", "行政院卓榮泰院長", "貝里斯大使館 H.E. Ambassador Katherine Meighan", "財團法人伊甸社會福利基金會陳智宏處長", "財團法人國家實驗研究院徐玉學博士營運長", "財團法人資訊工業策進會温敏卉董事長秘書", "財團法人資訊工業策進會黃仲銘董事長", "達擎股份有限公司吳宜芳董事長暨總經理", "長榮航空股份有限公司曾義唐協理", "阿曼王國駐台北商務辦事處 Mr. Mohammed Al-Baraami Director", "阿曼王國駐台北商務辦事處 Ms. Joanna Kuo PR & Marketing Manager", "香港商輝達香港控股有限公司台灣分公司李文如副總裁", "香港電腦商會王志強主席", "馬來西亞友誼及貿易中心 Ms. Aznifah Ghani President/Representative", "馬來西亞友誼及貿易中心 Ms. Izzati Aisyah Adnan Deputy Representative", "馬尼拉經濟文化辦事處 Mr. Terry Lin Investment Officer", "駐台北印尼經濟貿易代表處 Mr. Eko Wijanarko Director of Investment", "駐台北烏蘭巴托貿易經濟代表處 Mr. Tumurbaatar Gankhuyag Representative", "駐台汶萊貿易旅遊代表處 Ms. Sia Ai Ching Representative", "駐台汶萊貿易旅遊代表處Ms. Sia Ai Ching Representative", "駐臺北韓國代表部 Mr. Koh Sang-Wook Acting Representative", "駐臺北韓國代表部李夏民研究員", "駐臺北韓國代表部李正律科長", "高陽市產業振興院 Mr. Han Dong Gyun President"];
-const isRes=n=>n&&(n.startsWith('保留席')||n.startsWith('GROUP')||/^(媒體|外媒|國際貿易署)/.test(n));
-const ZS_MAP={'A':0,'B':1,'C':2};
-function codeToSid(c){const z=ZS_MAP[c[0]];const p=c.slice(1).split('-');return(parseInt(p[0])-1)+'-'+z+'-'+parseInt(p[1]);}
-
-const seatMap={},asgn={},tags={},occupied={};
+// ── 狀態管理 ──
+let layoutMode = 'grid'; // 'grid' 或 'round'
+const seatMap={}, asgn={}, tags={}, occupied={};
 const guests=[];
-let dragGuest=null,dragFrom=null,masterLoaded=false,saveTimer=null;
-let modalId=null,modalR=null,modalZ=null,modalS=null;
+let dragGuest=null, dragFrom=null, masterLoaded=false, saveTimer=null;
+let modalCode=null; // 現在統一使用 code (例如 A1-1 或 T1-1) 當作 ID
 const dtt=document.getElementById('dtt');
-const sid=(r,z,s)=>r+'-'+z+'-'+s;
-const code=(r,z,s)=>ZK[z]+(r+1)+'-'+s;
 
 function setSyncStatus(s){
   const dot=document.getElementById('sync-dot'),lbl=document.getElementById('sync-lbl');
@@ -208,112 +204,193 @@ function setSyncStatus(s){
   else{dot.className='sync-dot off';lbl.textContent='連線失敗';}
 }
 
+// ── 1. Firebase 資料載入與判定 ──
 onValue(masterRef,snap=>{
   const d=snap.val()||{};
   Object.keys(seatMap).forEach(k=>delete seatMap[k]);
-  if(Object.keys(d).length===0){
-    // seats_master2026 是空的，名單從 assignments2026 動態建立，避免名稱不符
-    guests.length=0;
-  }else{
+  
+  const keys = Object.keys(d);
+  if(keys.length > 0) {
     Object.entries(d).forEach(([c,n])=>seatMap[c]=n);
+    
+    // 自動判定排版模式：如果有 T 開頭的代碼，判定為圓桌
+    layoutMode = keys.some(k => k.toUpperCase().startsWith('T')) ? 'round' : 'grid';
+    
     rebuildGuests();
+    buildVenue(keys); // 重建畫布
+  } else {
+      document.getElementById('vr').innerHTML = '<div style="text-align:center; padding: 20px; color: #9CA3AF;">請先在 seats_master2026 匯入座位表資料</div>';
   }
-  masterLoaded=true;setSyncStatus('ok');refreshAll();
+  
+  masterLoaded=true; setSyncStatus('ok'); refreshAll();
 },()=>{
-  Object.entries(FALLBACK).forEach(([c,n])=>seatMap[c]=n);
-  guests.length=0;guests.push(...FALLBACK_GUESTS);
-  masterLoaded=true;setSyncStatus('error');refreshAll();
+  setSyncStatus('error');
 });
 
+// 因為 ID 已經統一，讀取 assignment 直接存入 asgn
 onValue(assignRef,snap=>{
   const d=snap.val()||{};
   Object.keys(asgn).forEach(k=>delete asgn[k]);
-  Object.entries(d).forEach(([c,n])=>{const s=codeToSid(c);if(s)asgn[s]=n;});
-  // 確保 asgn 裡的人也在 guests（避免遺漏）
-  Object.values(asgn).forEach(n=>{if(n&&!isRes(n)&&!guests.includes(n))guests.push(n);});
+  Object.entries(d).forEach(([c,n])=>{ asgn[c]=n; });
+  Object.values(asgn).forEach(n=>{if(n&&!guests.includes(n))guests.push(n);});
   guests.sort();
   if(masterLoaded)refreshAll();
 });
 
-function rebuildGuests(){
-  guests.length=0;
-  guests.push(...[...new Set(Object.values(seatMap).filter(n=>!isRes(n)))].sort());
-}
-
 onValue(tagsRef,snap=>{
   const d=snap.val()||{};
   Object.keys(tags).forEach(k=>delete tags[k]);
-  Object.entries(d).forEach(([c,t])=>{const s=codeToSid(c);if(s)tags[s]=t;});
+  Object.entries(d).forEach(([c,t])=>{ tags[c]=t; });
   if(masterLoaded)refreshAll();
 });
 
 onValue(occRef,snap=>{
   const d=snap.val()||{};
   Object.keys(occupied).forEach(k=>delete occupied[k]);
-  Object.entries(d).forEach(([c,v])=>{if(v==='佔用'){const s=codeToSid(c);if(s)occupied[s]=true;}});
+  Object.entries(d).forEach(([c,v])=>{if(v==='佔用') occupied[c]=true;});
   if(masterLoaded)refreshAll();
 });
 
+function rebuildGuests(){
+  guests.length=0;
+  guests.push(...[...new Set(Object.values(seatMap))].sort());
+}
+
+// ── 儲存到 Firebase ──
+// 寫入變得超簡單！直接把物件丟給 Firebase
 async function saveAll(){
   setSyncStatus('saving');
   try{
-    const ao={};Object.entries(asgn).forEach(([id,n])=>{const p=id.split('-');ao[code(+p[0],+p[1],+p[2])]=n;});
-    await set(assignRef,Object.keys(ao).length?ao:null);
-    const to={};Object.entries(tags).forEach(([id,t])=>{const p=id.split('-');to[code(+p[0],+p[1],+p[2])]=t;});
-    await set(tagsRef,Object.keys(to).length?to:null);
-    const oo={};Object.keys(occupied).forEach(id=>{const p=id.split('-');oo[code(+p[0],+p[1],+p[2])]='佔用';});
-    await set(occRef,Object.keys(oo).length?oo:null);
+    await set(assignRef, Object.keys(asgn).length ? asgn : null);
+    await set(tagsRef, Object.keys(tags).length ? tags : null);
+    
+    const oo={}; Object.keys(occupied).forEach(k => oo[k] = '佔用');
+    await set(occRef, Object.keys(oo).length ? oo : null);
+    
     setSyncStatus('ok');
   }catch(e){setSyncStatus('error');toast('儲存失敗','ter');}
 }
 function scheduleSave(){clearTimeout(saveTimer);saveTimer=setTimeout(saveAll,800);}
 
-// ── 建立座位圖（自適應寬度）────────────────────────────
-function buildVenue(){
-  const wrap=document.getElementById('venue-wrap');
-  const availW=wrap.clientWidth-32; // padding
-  const rowLabelW=24;
-  const gapW=12;
-  const totalCols=ZS[0]+ZS[1]+ZS[2]; // 6+9+6=21
-  const seatW=Math.floor((availW-rowLabelW-gapW*2)/totalCols);
-  const seatGap=0;
 
-  // Zone header row
-  const hdr=document.getElementById('zone-hdr');
-  hdr.innerHTML='';
-  hdr.style.gap='0';
-  const spacer=document.createElement('div');spacer.style.cssText=`width:${rowLabelW}px;flex-shrink:0;`;hdr.appendChild(spacer);
-  [['A 區（左）','zh-a',ZS[0]],['B 區（中）','zh-b',ZS[1]],['C 區（右）','zh-c',ZS[2]]].forEach(([lbl,cls,sz],zi)=>{
-    if(zi>0){const g=document.createElement('div');g.style.cssText=`width:${gapW}px;flex-shrink:0;`;hdr.appendChild(g);}
-    const d=document.createElement('div');d.className=`zh ${cls}`;d.style.cssText=`width:${seatW*sz}px;flex-shrink:0;`;d.textContent=lbl;hdr.appendChild(d);
-  });
-
-  const c=document.getElementById('vr');c.innerHTML='';
-  for(let r=0;r<ROWS;r++){
-    const row=document.createElement('div');row.className='vrow';
-    const lbl=document.createElement('div');lbl.className='rl';lbl.style.width=rowLabelW+'px';lbl.textContent=r+1;row.appendChild(lbl);
-    for(let z=0;z<3;z++){
-      if(z>0){const a=document.createElement('div');a.className='seat-gap';a.style.width=gapW+'px';row.appendChild(a);}
-      const zone=document.createElement('div');zone.className='vzone';
-      for(let s=1;s<=ZS[z];s++){
-        const id=sid(r,z,s),el=document.createElement('div');
-        el.className='seat s'+ZK[z].toLowerCase();
-        el.style.width=seatW+'px';
-        el.id='s'+id;el.dataset.id=id;el.dataset.r=r;el.dataset.z=z;el.dataset.s=s;
-        el.title=code(r,z,s);
-        el.onclick=()=>openModal(id,r,z,s);
-        el.draggable=false;
-        el.addEventListener('dragstart',onDS);el.addEventListener('dragend',onDE);
-        el.addEventListener('dragover',onDO);el.addEventListener('dragleave',onDL);
-        el.addEventListener('drop',onDP);
-        zone.appendChild(el);
-      }
-      row.appendChild(zone);
-    }
-    c.appendChild(row);
+// ── 2. 動態渲染畫布 ──
+function buildVenue(keys){
+  const wrap = document.getElementById('vr');
+  wrap.innerHTML = '';
+  document.getElementById('st-total').textContent = keys.length;
+  
+  if (layoutMode === 'round') {
+      buildRoundVenue(keys, wrap);
+  } else {
+      buildGridVenue(wrap);
   }
 }
 
+// 渲染：圓桌晚宴模式
+function buildRoundVenue(keys, wrap) {
+    document.querySelector('.stage').textContent = 'STAGE / 舞台 (圓桌模式)';
+    const container = document.createElement('div');
+    container.className = 'round-container';
+    
+    // 依據桌號分組： 'T1-1' -> 桌號 'T1'
+    const tables = {};
+    keys.forEach(k => {
+        const tCode = k.split('-')[0]; 
+        if(!tables[tCode]) tables[tCode] = [];
+        tables[tCode].push(k);
+    });
+
+    Object.entries(tables).forEach(([tCode, seatCodes]) => {
+        const tWrap = document.createElement('div');
+        tWrap.className = 'round-table-wrap';
+        
+        const center = document.createElement('div');
+        center.className = 'round-table-center';
+        center.innerHTML = `<span>${tCode.replace('T', '桌號 ')}</span><span style="font-size:9px; font-weight:normal;">${seatCodes.length} 席</span>`;
+        tWrap.appendChild(center);
+
+        const totalSeats = seatCodes.length;
+        const radius = 75; // 圓半徑
+        
+        // 排序座位，讓 1 號在最上方
+        seatCodes.sort((a, b) => parseInt(a.split('-')[1]) - parseInt(b.split('-')[1]));
+
+        seatCodes.forEach((code, index) => {
+            const el = document.createElement('div');
+            // 給予交替的顏色 class 以區分空位
+            el.className = 'seat round-seat s' + (index%3===0?'a':index%3===1?'b':'c'); 
+            el.id = 's-' + code;
+            el.dataset.id = code;
+            el.title = code;
+            
+            // 三角函數計算環繞
+            const angle = (index * (360 / totalSeats) - 90) * (Math.PI / 180);
+            const x = 75 - 15 + radius * Math.cos(angle);
+            const y = 75 - 15 + radius * Math.sin(angle);
+            el.style.left = x + 'px';
+            el.style.top = y + 'px';
+            
+            attachSeatEvents(el, code);
+            tWrap.appendChild(el);
+        });
+        container.appendChild(tWrap);
+    });
+    wrap.appendChild(container);
+}
+
+// 渲染：方陣排排坐模式 (相容你原本的 10 排 3 區)
+function buildGridVenue(wrap) {
+    document.querySelector('.stage').textContent = 'STAGE / 舞台 (方陣模式)';
+    
+    const ZS=[6,9,6], ZK=['A','B','C'];
+    const rowLabelW=24, gapW=12;
+    const availW = document.getElementById('venue-wrap').clientWidth - 32;
+    const seatW = Math.floor((availW-rowLabelW-gapW*2)/21);
+
+    // 標題列
+    const hdr = document.createElement('div'); hdr.className = 'zone-header-row';
+    hdr.innerHTML = `<div style="width:${rowLabelW}px;flex-shrink:0;"></div>
+                     <div class="zh zh-a" style="width:${seatW*6}px;flex-shrink:0;">A 區（左）</div>
+                     <div style="width:${gapW}px;flex-shrink:0;"></div>
+                     <div class="zh zh-b" style="width:${seatW*9}px;flex-shrink:0;">B 區（中）</div>
+                     <div style="width:${gapW}px;flex-shrink:0;"></div>
+                     <div class="zh zh-c" style="width:${seatW*6}px;flex-shrink:0;">C 區（右）</div>`;
+    wrap.appendChild(hdr);
+
+    for(let r=0;r<10;r++){
+      const row = document.createElement('div'); row.className='vrow';
+      const lbl = document.createElement('div'); lbl.className='rl'; lbl.style.width=rowLabelW+'px'; lbl.textContent=r+1; row.appendChild(lbl);
+      for(let z=0;z<3;z++){
+        if(z>0){const a=document.createElement('div');a.style.width=gapW+'px';a.style.flexShrink=0;row.appendChild(a);}
+        const zone=document.createElement('div'); zone.className='vzone';
+        for(let s=1;s<=ZS[z];s++){
+          const code = ZK[z]+(r+1)+'-'+s;
+          const el=document.createElement('div');
+          el.className='seat s'+ZK[z].toLowerCase();
+          el.style.width=seatW+'px';
+          el.id='s-'+code; el.dataset.id=code; el.title=code;
+          
+          attachSeatEvents(el, code);
+          zone.appendChild(el);
+        }
+        row.appendChild(zone);
+      }
+      wrap.appendChild(row);
+    }
+}
+
+// 綁定拖曳與點擊事件
+function attachSeatEvents(el, code) {
+    el.draggable=false;
+    el.onclick=()=>openModal(code);
+    el.addEventListener('dragstart',onDS); 
+    el.addEventListener('dragend',onDE);
+    el.addEventListener('dragover',onDO); 
+    el.addEventListener('dragleave',onDL);
+    el.addEventListener('drop',onDP);
+}
+
+// ── 拖曳邏輯 ──
 function onDS(e){const id=this.dataset.id;if(!asgn[id]&&!occupied[id]){e.preventDefault();return;}
   dragGuest=asgn[id]||null;dragFrom=id;this.classList.add('drag-src');
   e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain',dragGuest||'');showTip(e,dragGuest||'佔用');}
@@ -336,14 +413,18 @@ function chipDrag(chip,g){
   chip.addEventListener('dragend',()=>{chip.classList.remove('dragging');dragGuest=null;dragFrom=null;hideTip();clearDO();});
 }
 
-function openModal(id,r,z,s){
-  modalId=id;modalR=r;modalZ=z;modalS=s;
-  const g=asgn[id]||'',occ=occupied[id],tag=tags[id]||'';
-  document.getElementById('m-code').innerHTML=`<span class="bz bz${ZK[z].toLowerCase()}">${ZK[z]} 區</span>${code(r,z,s)}`;
+// ── 彈出視窗 ──
+function openModal(code){
+  modalCode=code;
+  const g=asgn[code]||'', occ=occupied[code], tag=tags[code]||'';
+  
+  document.getElementById('m-code').innerHTML=`<span class="bz ${layoutMode==='round'?'bzb':'bza'}">${layoutMode==='round'?'圓桌':'方陣'}</span> 座位 ${code}`;
   document.getElementById('m-name').textContent=occ?'（佔用中）':g||'（空位）';
-  const avail=guests.filter(gg=>!Object.entries(asgn).some(([sid2,ag])=>sid2!==id&&ag===gg));
+  
+  const avail=guests.filter(gg=>!Object.entries(asgn).some(([c,ag])=>c!==code&&ag===gg));
   const sel=document.getElementById('m-select');
   sel.innerHTML='<option value="">— 請選擇賓客 —</option>'+(g?`<option value="${g}" selected>${g}</option>`:'')+avail.filter(gg=>gg!==g).map(gg=>`<option value="${gg}">${gg}</option>`).join('');
+  
   document.getElementById('m-assign-sec').style.display=occ?'none':'';
   document.getElementById('m-clear-btn').style.display=g?'':'none';
   const showTag=!occ;
@@ -367,145 +448,142 @@ function openModal(id,r,z,s){
 }
 
 window.closeBg=function(e){if(e.target===document.getElementById('modal-bg'))closeModal();};
-window.closeModal=function(){document.getElementById('modal-bg').classList.remove('show');modalId=null;};
+window.closeModal=function(){document.getElementById('modal-bg').classList.remove('show');modalCode=null;};
 window.doAssignModal=function(g){
-  if(!modalId)return;
-  if(g===''){delete asgn[modalId];delete tags[modalId];}else{asgn[modalId]=g;delete occupied[modalId];}
-  refreshAll();scheduleSave();openModal(modalId,modalR,modalZ,modalS);
+  if(!modalCode)return;
+  if(g===''){delete asgn[modalCode];delete tags[modalCode];}else{asgn[modalCode]=g;delete occupied[modalCode];}
+  refreshAll();scheduleSave();openModal(modalCode);
 };
 window.clearSeat=function(){
-  if(!modalId)return;
-  delete asgn[modalId];delete tags[modalId];
-  refreshAll();scheduleSave();openModal(modalId,modalR,modalZ,modalS);
+  if(!modalCode)return;
+  delete asgn[modalCode];delete tags[modalCode];
+  refreshAll();scheduleSave();openModal(modalCode);
 };
 window.toggleTag=function(t){
-  if(!modalId)return;
-  if(tags[modalId]===t)delete tags[modalId];else tags[modalId]=t;
+  if(!modalCode)return;
+  if(tags[modalCode]===t)delete tags[modalCode];else tags[modalCode]=t;
   refreshAll();scheduleSave();
-  document.getElementById('btn-ceremony').classList.toggle('active',tags[modalId]==='ceremony');
-  document.getElementById('btn-photo').classList.toggle('active',tags[modalId]==='photo');
-  toast(tags[modalId]?`已標記：${tags[modalId]==='ceremony'?'揭幕':'合影'}`:'已清除標記','tok');
+  document.getElementById('btn-ceremony').classList.toggle('active',tags[modalCode]==='ceremony');
+  document.getElementById('btn-photo').classList.toggle('active',tags[modalCode]==='photo');
+  toast(tags[modalCode]?`已標記：${tags[modalCode]==='ceremony'?'揭幕':'合影'}`:'已清除標記','tok');
 };
 window.toggleOccupied=function(){
-  if(!modalId)return;
-  if(occupied[modalId]){delete occupied[modalId];toast('已取消佔用','tin');}
-  else{occupied[modalId]=true;delete asgn[modalId];delete tags[modalId];toast('🪑 已標記佔用','tok');}
-  refreshAll();scheduleSave();openModal(modalId,modalR,modalZ,modalS);
+  if(!modalCode)return;
+  if(occupied[modalCode]){delete occupied[modalCode];toast('已取消佔用','tin');}
+  else{occupied[modalCode]=true;delete asgn[modalCode];delete tags[modalCode];toast('🪑 已標記佔用','tok');}
+  refreshAll();scheduleSave();openModal(modalCode);
 };
 
+// ── 畫面更新邏輯 ──
 function refreshAll(){renderSeats();updateStats();renderChips();}
 function renderSeats(){
-  for(let r=0;r<ROWS;r++)for(let z=0;z<3;z++)for(let s=1;s<=ZS[z];s++){
-    const id=sid(r,z,s),el=document.getElementById('s'+id);if(!el)continue;
-    const g=asgn[id],occ=occupied[id],tag=tags[id];
-    let cls='seat s'+ZK[z].toLowerCase();
-    if(occ)cls+=' occupied';else if(tag==='ceremony')cls+=' ceremony';else if(tag==='photo')cls+=' photo';else if(g)cls+=' filled';
-    el.className=cls;el.draggable=!!(g||occ);
-    el.textContent=occ?'占':g?(g.trim()[0]||'?'):'';
-    el.title=code(r,z,s)+(occ?' — 佔用':g?' — '+g:'');
-  }
+  Object.keys(seatMap).forEach(code => {
+    const el = document.getElementById('s-'+code);
+    if(!el) return;
+    const g=asgn[code], occ=occupied[code], tag=tags[code];
+    
+    // 移除舊的狀態 class，保留基本樣式
+    el.classList.remove('occupied', 'ceremony', 'photo', 'filled');
+    
+    if(occ) el.classList.add('occupied');
+    else if(tag==='ceremony') el.classList.add('ceremony');
+    else if(tag==='photo') el.classList.add('photo');
+    else if(g) el.classList.add('filled');
+    
+    el.draggable=!!(g||occ);
+    
+    // 圓桌因為比較小，只顯示頭文字或數字
+    if(layoutMode === 'round') {
+       el.textContent = occ?'占':g?(g.trim()[0]||'?'): code.split('-')[1];
+    } else {
+       el.textContent = occ?'占':g?(g.trim()[0]||'?'):'';
+    }
+    
+    el.title=code+(occ?' — 佔用':g?' — '+g:'');
+  });
 }
+
 function updateStats(){
-  const n=Object.keys(asgn).length,oc=Object.keys(occupied).length,gc=guests.length;
+  const total = Object.keys(seatMap).length;
+  const n=Object.keys(asgn).length, oc=Object.keys(occupied).length, gc=guests.length;
   document.getElementById('sa').textContent=n+oc;
-  document.getElementById('se').textContent=210-n-oc;
+  document.getElementById('se').textContent=total-n-oc;
   document.getElementById('sg').textContent=gc;
   document.getElementById('pf').style.width=(gc?n/gc*100:0)+'%';
   document.getElementById('ptxt').textContent=n+' / '+gc+' 位賓客已分配';
 }
+
 window.renderChips=function renderChips(){
   const aset=new Set(Object.values(asgn));
   const kw=(document.getElementById('gs')||{value:''}).value.trim().toLowerCase();
-
-  // ── 清除舊的 highlight ──────────────────────────────────
   document.querySelectorAll('.seat.found').forEach(el=>el.classList.remove('found'));
-
   const box=document.getElementById('chips');box.innerHTML='';
 
   if(kw){
-    // ── 搜尋模式：在座位圖上 highlight 符合的座位 ──────────
     let foundSeats=[];
-    Object.entries(asgn).forEach(([id,name])=>{
+    Object.entries(asgn).forEach(([code,name])=>{
       if(name&&name.toLowerCase().includes(kw)){
-        const el=document.getElementById('s'+id);
-        if(el){el.classList.add('found');foundSeats.push({id,name});}
+        const el=document.getElementById('s-'+code);
+        if(el){el.classList.add('found');foundSeats.push({code,name});}
       }
     });
-    // 也搜尋未分配的賓客
     const unassignedMatches=guests.filter(g=>!aset.has(g)&&g.toLowerCase().includes(kw));
 
-    document.getElementById('uc-count').textContent=
-      (foundSeats.length+unassignedMatches.length)+' 筆結果';
+    document.getElementById('uc-count').textContent=(foundSeats.length+unassignedMatches.length)+' 筆結果';
 
     if(!foundSeats.length&&!unassignedMatches.length){
       box.innerHTML='<div style="font-size:11px;color:#9CA3AF;padding:4px;">找不到符合的賓客</div>';
       return;
     }
-    // 顯示已分配的搜尋結果（含座位編號）
-    foundSeats.forEach(({id,name})=>{
-      const p=id.split('-');const seatCode=code(+p[0],+p[1],+p[2]);
-      const chip=document.createElement('span');
-      chip.className='chip';
-      chip.style.cssText='background:#FEFCE8;border-color:#CA8A04;color:#713F12;';
+    foundSeats.forEach(({code,name})=>{
+      const chip=document.createElement('span'); chip.className='chip'; chip.style.cssText='background:#FEFCE8;border-color:#CA8A04;color:#713F12;';
       chip.textContent=name;
-      const badge=document.createElement('span');
-      badge.style.cssText='font-size:9px;background:#FDE047;color:#713F12;padding:1px 5px;border-radius:4px;margin-left:5px;font-weight:700;';
-      badge.textContent=seatCode;
-      chip.appendChild(badge);
-      // 點擊後捲動到座位
+      const badge=document.createElement('span'); badge.style.cssText='font-size:9px;background:#FDE047;color:#713F12;padding:1px 5px;border-radius:4px;margin-left:5px;font-weight:700;';
+      badge.textContent=code; chip.appendChild(badge);
       chip.onclick=()=>{
-        const el=document.getElementById('s'+id);
-        if(el){el.scrollIntoView({behavior:'smooth',block:'center'});
-          el.style.outline='3px solid #CA8A04';setTimeout(()=>el.style.outline='',1500);}
+        const el=document.getElementById('s-'+code);
+        if(el){el.scrollIntoView({behavior:'smooth',block:'center'}); el.style.outline='3px solid #CA8A04';setTimeout(()=>el.style.outline='',1500);}
       };
       box.appendChild(chip);
     });
-    // 顯示未分配的搜尋結果
     unassignedMatches.forEach(g=>{
       const chip=document.createElement('span');chip.className='chip';chip.textContent=g;
       chip.onclick=()=>{
-        if(modalId&&!occupied[modalId]){asgn[modalId]=g;delete occupied[modalId];refreshAll();scheduleSave();openModal(modalId,modalR,modalZ,modalS);}
+        if(modalCode&&!occupied[modalCode]){asgn[modalCode]=g;delete occupied[modalCode];refreshAll();scheduleSave();openModal(modalCode);}
         else toast('請先點選一個座位','ter');
       };
-      const xBtn=document.createElement('button');xBtn.className='chip-x';xBtn.textContent='✕';xBtn.title='從名單移除';
+      const xBtn=document.createElement('button');xBtn.className='chip-x';xBtn.textContent='✕';
       xBtn.onclick=e=>{e.stopPropagation();removeGuest(g);};
       chip.appendChild(xBtn);chipDrag(chip,g);box.appendChild(chip);
     });
     return;
   }
 
-  // ── 一般模式：顯示未分配名單 ───────────────────────────
   let list=guests.filter(g=>!aset.has(g));
   document.getElementById('uc-count').textContent=list.length+' 未分配';
   if(!list.length){box.innerHTML='<div style="font-size:11px;color:#9CA3AF;padding:4px;">🎉 所有賓客皆已分配！</div>';return;}
   list.forEach(g=>{
     const chip=document.createElement('span');chip.className='chip';chip.textContent=g;
     chip.onclick=()=>{
-      if(modalId&&!occupied[modalId]){asgn[modalId]=g;delete occupied[modalId];refreshAll();scheduleSave();openModal(modalId,modalR,modalZ,modalS);}
+      if(modalCode&&!occupied[modalCode]){asgn[modalCode]=g;delete occupied[modalCode];refreshAll();scheduleSave();openModal(modalCode);}
       else toast('請先點選一個座位','ter');
     };
-    const xBtn=document.createElement('button');xBtn.className='chip-x';xBtn.textContent='✕';xBtn.title='從名單移除';
+    const xBtn=document.createElement('button');xBtn.className='chip-x';xBtn.textContent='✕';
     xBtn.onclick=e=>{e.stopPropagation();removeGuest(g);};
     chip.appendChild(xBtn);chipDrag(chip,g);box.appendChild(chip);
   });
 }
 function removeGuest(g){
   const idx=guests.indexOf(g);if(idx===-1)return;guests.splice(idx,1);
-  Object.entries(asgn).forEach(([id,n])=>{if(n===g){delete asgn[id];delete tags[id];}});
+  Object.entries(asgn).forEach(([c,n])=>{if(n===g){delete asgn[c];delete tags[c];}});
   refreshAll();scheduleSave();toast('已移除：'+g.substring(0,15)+'...','tin');
 }
 window.addGuest=function(){
   const inp=document.getElementById('gi');
-  if(!inp){toast('找不到輸入欄位','ter');return;}
   const n=inp.value.trim();
-  if(!n){toast('請輸入賓客名稱','ter');return;}
-  if(guests.includes(n)){toast('此賓客已在名單中','ter');return;}
-  guests.push(n);
-  guests.sort();
-  inp.value='';
-  inp.focus();
-  refreshAll();
-  toast('已新增：'+n.substring(0,20)+(n.length>20?'...':''),'tok');
+  if(!n)return toast('請輸入賓客名稱','ter');
+  if(guests.includes(n))return toast('此賓客已在名單中','ter');
+  guests.push(n); guests.sort(); inp.value=''; refreshAll(); toast('已新增','tok');
 };
 window.doReset=function(){
   if(!confirm('確定要清除所有分配、標記和佔用嗎？'))return;
@@ -515,129 +593,7 @@ window.doReset=function(){
   refreshAll();scheduleSave();
 };
 
-// ── 匯出分配 XLSX ─────────────────────────────────────
-window.doExport=function(){
-  if(typeof XLSX==='undefined'){toast('載入中','ter');return;}
-  const btn=document.getElementById('exbtn');btn.textContent='⏳...';btn.disabled=true;
-  try{
-    const wb=XLSX.utils.book_new();
-    const r1=[['座位編號','組別','排別','座號','賓客姓名','狀態','活動標記']];
-    for(let r=0;r<ROWS;r++)for(let z=0;z<3;z++)for(let s=1;s<=ZS[z];s++){
-      const id=sid(r,z,s),g=asgn[id]||'',occ=occupied[id],tag=tags[id]||'';
-      r1.push([code(r,z,s),ZN[z],'第'+(r+1)+'排','第'+s+'號',occ?'（佔用）':g,occ?'佔用':g?'已分配':'空位',tag==='ceremony'?'揭幕':tag==='photo'?'合影':'']);
-    }
-    const ws=XLSX.utils.aoa_to_sheet(r1);ws['!cols']=[{wch:10},{wch:12},{wch:8},{wch:8},{wch:42},{wch:8},{wch:8}];
-    XLSX.utils.book_append_sheet(wb,ws,'座位分配總表');
-    const cR=[['座位編號','賓客姓名']];
-    Object.entries(tags).filter(([,t])=>t==='ceremony').forEach(([id])=>{const p=id.split('-');cR.push([code(+p[0],+p[1],+p[2]),asgn[id]||'']);});
-    const wc=XLSX.utils.aoa_to_sheet(cR);wc['!cols']=[{wch:10},{wch:42}];XLSX.utils.book_append_sheet(wb,wc,'揭幕名單');
-    const pR=[['座位編號','賓客姓名']];
-    Object.entries(tags).filter(([,t])=>t==='photo').forEach(([id])=>{const p=id.split('-');pR.push([code(+p[0],+p[1],+p[2]),asgn[id]||'']);});
-    const wp=XLSX.utils.aoa_to_sheet(pR);wp['!cols']=[{wch:10},{wch:42}];XLSX.utils.book_append_sheet(wb,wp,'合影名單');
-    const out=XLSX.write(wb,{bookType:'xlsx',type:'array'});
-    const blob=new Blob([out],{type:'application/octet-stream'});
-    const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='座位分配表.xlsx';
-    document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(url);document.body.removeChild(a);},1000);
-    toast('✓ 已匯出分配表','tok');
-  }catch(e){toast('匯出失敗','ter');}
-  finally{setTimeout(()=>{btn.textContent='⬇ 匯出 XLSX';btn.disabled=false;},1200);}
-};
-
-// ── 匯出視覺化席次圖 XLSX ─────────────────────────────
-window.doExportMap=function(){
-  if(typeof XLSX==='undefined'){toast('載入中','ter');return;}
-  const btn=document.getElementById('mapbtn');btn.textContent='⏳...';btn.disabled=true;
-  try{
-    const wb=XLSX.utils.book_new();
-    const ws=XLSX.utils.aoa_to_sheet([]);
-    ws['!merges']=[];
-    const thin={style:'thin',color:{rgb:'CCCCCC'}};
-    const bdr={top:thin,bottom:thin,left:thin,right:thin};
-    const fill=h=>({patternType:'solid',fgColor:{rgb:h}});
-    const ca=(wrap=true)=>({horizontal:'center',vertical:'center',wrapText:wrap});
-    const font=(sz,bold,color)=>({sz,bold,color:{rgb:color||'000000'},name:'Arial'});
-    function mc(r1,c1,r2,c2){ws['!merges'].push({s:{r:r1,c:c1},e:{r:r2,c:c2}});}
-    function sc(r,c,v,style){
-      const addr=XLSX.utils.encode_cell({r,c});
-      ws[addr]={v,t:typeof v==='number'?'n':'s',s:style};
-      if(!ws['!ref'])ws['!ref']=addr;
-      else{const rng=XLSX.utils.decode_range(ws['!ref']);const cr=XLSX.utils.decode_cell(addr);
-        rng.s.r=Math.min(rng.s.r,cr.r);rng.s.c=Math.min(rng.s.c,cr.c);
-        rng.e.r=Math.max(rng.e.r,cr.r);rng.e.c=Math.max(rng.e.c,cr.c);
-        ws['!ref']=XLSX.utils.encode_range(rng);}
-    }
-    const COL_L=0,COL_A=[1,2,3,4,5,6],COL_G1=7,COL_B=[8,9,10,11,12,13,14,15,16],COL_G2=17,COL_C=[18,19,20,21,22,23],COL_R=24;
-    const gl=c=>XLSX.utils.get_column_letter?XLSX.utils.get_column_letter(c+1):String.fromCharCode(65+c);
-    ws['!cols']=[{wch:3}];
-    COL_A.forEach(()=>ws['!cols'].push({wch:18}));ws['!cols'].push({wch:2});
-    COL_B.forEach(()=>ws['!cols'].push({wch:18}));ws['!cols'].push({wch:2});
-    COL_C.forEach(()=>ws['!cols'].push({wch:18}));ws['!cols'].push({wch:3});
-
-    // Row 1: Title
-    ws['!rows']=[{hpx:28}];mc(0,0,0,24);
-    sc(0,0,'2026 COMPUTEX CEREMONY 席次圖',{font:font(14,true,'1F3864'),fill:fill('F2F2F2'),alignment:ca()});
-    // Row 2: Stage
-    ws['!rows'].push({hpx:20});mc(1,1,1,23);
-    sc(1,1,'舞　台',{font:font(11,true,'FFFFFF'),fill:fill('4472C4'),alignment:ca()});
-    // Row 3: Zone headers
-    ws['!rows'].push({hpx:16});
-    mc(2,COL_A[0],2,COL_A[5]);sc(2,COL_A[0],'A 區（左）',{font:font(10,true,'1F3864'),fill:fill('BDD7EE'),alignment:ca()});
-    mc(2,COL_B[0],2,COL_B[8]);sc(2,COL_B[0],'B 區（中）',{font:font(10,true,'375623'),fill:fill('C6EFCE'),alignment:ca()});
-    mc(2,COL_C[0],2,COL_C[5]);sc(2,COL_C[0],'C 區（右）',{font:font(10,true,'7F6000'),fill:fill('FFE699'),alignment:ca()});
-    // Row 4: Seat numbers
-    ws['!rows'].push({hpx:14});
-    COL_A.forEach((c,i)=>sc(3,c,String(i+1),{font:font(8,true,'1F3864'),fill:fill('BDD7EE'),alignment:ca(),border:bdr}));
-    COL_B.forEach((c,i)=>sc(3,c,String(i+1),{font:font(8,true,'375623'),fill:fill('C6EFCE'),alignment:ca(),border:bdr}));
-    COL_C.forEach((c,i)=>sc(3,c,String(i+1),{font:font(8,true,'7F6000'),fill:fill('FFE699'),alignment:ca(),border:bdr}));
-
-    const START=4;
-    for(let r=0;r<ROWS;r++){
-      const nr=START+r*2,cr=nr+1;
-      ws['!rows'].push({hpx:42});ws['!rows'].push({hpx:12});
-      mc(nr,COL_L,cr,COL_L);sc(nr,COL_L,String(r+1),{font:font(9,true,'595959'),fill:fill('F2F2F2'),alignment:ca(),border:bdr});
-      mc(nr,COL_R,cr,COL_R);sc(nr,COL_R,String(r+1),{font:font(9,true,'595959'),fill:fill('F2F2F2'),alignment:ca(),border:bdr});
-      const zoneData=[
-        [COL_A,'A','DEEAF1','BDD7EE'],
-        [COL_B,'B','E2EFDA','C6EFCE'],
-        [COL_C,'C','FFF2CC','FFE699'],
-      ];
-      zoneData.forEach(([cols,zk,nf,cf])=>{
-        cols.forEach((col,si)=>{
-          const sCode=ZK[['A','B','C'].indexOf(zk)]+(r+1)+'-'+(si+1);
-          const id=codeToSid(sCode);
-          const g=id?asgn[id]||'':'';
-          const occ=id&&occupied[id];
-          const tag=id&&tags[id];
-          const empty=!g&&!occ;
-          const res=g&&isRes(g);
-          let nameFill=empty?'FFFFFF':res?'F5F5F5':nf;
-          let codeFill=empty?'FFFFFF':res?'F5F5F5':'F8F8F8';
-          if(tag==='ceremony'){nameFill='FECDD3';codeFill='FFE4E6';}
-          if(tag==='photo'){nameFill='FEF3C7';codeFill='FFFBEB';}
-          if(occ){nameFill='E0E7FF';codeFill='EEF2FF';}
-          const displayName=occ?'（佔用）':g||'';
-          sc(nr,col,displayName,{font:font(8,false,empty||res?'AAAAAA':'000000'),fill:fill(nameFill),alignment:ca(),border:bdr});
-          sc(cr,col,sCode,{font:font(7,!empty,'AAAAAA'),fill:fill(codeFill),alignment:ca(),border:bdr});
-        });
-      });
-      // gap cols
-      [COL_G1,COL_G2].forEach(gc=>{[nr,cr].forEach(row=>sc(row,gc,'',{fill:fill('FFFFFF')}));});
-    }
-    const last=START+ROWS*2;ws['!rows'].push({hpx:14});
-    mc(last,0,last,24);
-    const n=Object.keys(asgn).length;
-    sc(last,0,`共 ${n} 席已分配`,{font:font(9,false,'595959'),fill:fill('F2F2F2'),alignment:{horizontal:'left',vertical:'center'}});
-    ws['!pageSetup']={orientation:'landscape',fitToPage:true,fitToWidth:1};
-    XLSX.utils.book_append_sheet(wb,ws,'席次圖');
-
-    const out=XLSX.write(wb,{bookType:'xlsx',type:'array',cellStyles:true});
-    const blob=new Blob([out],{type:'application/octet-stream'});
-    const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='席次圖.xlsx';
-    document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(url);document.body.removeChild(a);},1000);
-    toast('🗺 席次圖已匯出','tok');
-  }catch(e){console.error(e);toast('匯出失敗: '+e.message,'ter');}
-  finally{setTimeout(()=>{btn.textContent='🗺 席次圖';btn.disabled=false;},1200);}
-};
+window.doExport=function(){ toast('請使用右上方匯出功能','tin'); }
 
 function clearDO(){document.querySelectorAll('.drag-over').forEach(el=>el.classList.remove('drag-over'));}
 function showTip(e,t){dtt.textContent=t;dtt.style.display='block';moveTip(e);}
@@ -646,8 +602,9 @@ function hideTip(){dtt.style.display='none';}
 document.addEventListener('dragover',e=>{if(dragGuest||dragFrom)moveTip(e);});
 function toast(msg,cls){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+cls;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',2800);}
 
-buildVenue();
-window.addEventListener('resize',buildVenue);
+window.addEventListener('resize', () => {
+    if(Object.keys(seatMap).length > 0) buildVenue(Object.keys(seatMap));
+});
 </script>
 </body>
 </html>
