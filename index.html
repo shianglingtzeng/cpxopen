@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2026 COMPUTEX 前台座位分配</title>
+<title>2026 前台座位系統 (資料驅動版)</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:-apple-system,'Helvetica Neue',Arial,sans-serif;background:#F0F4F8;padding:16px;}
@@ -18,13 +18,17 @@ h1{font-size:17px;font-weight:600;color:#1a365d;margin-bottom:.75rem;display:fle
 .stat{display:flex;flex-direction:column;}
 .sv{font-size:20px;font-weight:500;color:#111;}.sl{font-size:11px;color:#9CA3AF;}
 .btns{display:flex;gap:8px;flex-wrap:wrap;}
-.btn{font-size:12px;padding:7px 13px;border-radius:8px;border:0.5px solid #E5E7EB;background:#fff;color:#6B7280;cursor:pointer;white-space:nowrap;}
+.btn{font-size:12px;padding:7px 13px;border-radius:8px;border:0.5px solid #E5E7EB;background:#fff;color:#6B7280;cursor:pointer;white-space:nowrap;transition:all .2s;}
 .btn:hover{background:#F9FAFB;}
+.btn-primary{background:#185FA5;color:#fff;border-color:#185FA5;}
+.btn-primary:hover{background:#0C447C;color:#fff;}
 .btn-ex{background:#185FA5;color:#fff;border-color:#185FA5;font-size:13px;padding:8px 16px;}
 .btn-ex:hover{background:#0C447C;}
 .btn-map{background:#0F6E56;color:#fff;border-color:#0F6E56;font-size:13px;padding:8px 16px;}
 .btn-map:hover{background:#085041;}
 .btn-rst{border-color:#FCA5A5;color:#B91C1C;}
+.btn-setting{border-color:#93C5FD;color:#1D4ED8;background:#EFF6FF;font-weight:600;}
+.btn-setting:hover{background:#DBEAFE;}
 .pbar{height:4px;background:#F3F4F6;border-radius:99px;overflow:hidden;margin-bottom:3px;}
 .pfill{height:100%;background:linear-gradient(90deg,#185FA5,#1D9E75);border-radius:99px;transition:width .3s;}
 .toast{border-radius:8px;padding:9px 16px;font-size:13px;margin-bottom:.75rem;display:none;font-weight:500;position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.15);}
@@ -34,13 +38,17 @@ h1{font-size:17px;font-weight:600;color:#1a365d;margin-bottom:.75rem;display:fle
 .legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:.75rem;align-items:center;font-size:11px;color:#6B7280;}
 .leg{display:flex;align-items:center;gap:4px;}
 .ld{width:11px;height:11px;border-radius:3px;flex-shrink:0;}
-.venue{background:#fff;border:0.5px solid #E5E7EB;border-radius:12px;padding:1rem;overflow-x:auto;margin-bottom:1rem;width:100%;}
+.venue{background:#fff;border:0.5px solid #E5E7EB;border-radius:12px;padding:1rem;overflow-x:auto;margin-bottom:1rem;width:100%;min-height:200px;}
 .stage{text-align:center;font-size:11px;color:#9CA3AF;letter-spacing:2px;border:0.5px solid #E5E7EB;border-radius:6px;padding:4px;margin-bottom:.6rem;}
 
 /* ── 方陣專屬樣式 ── */
 .zone-header-row{display:flex;margin-bottom:4px;padding-left:26px;width:100%;}
 .zh{text-align:center;font-size:10px;font-weight:600;padding:2px 0;border-radius:4px;}
-.zh-a{color:#185FA5;background:#DBEAFE;}.zh-b{color:#065F46;background:#D1FAE5;}.zh-c{color:#92400E;background:#FEF3C7;}
+.zh-a{color:#185FA5;background:#DBEAFE;}
+.zh-b{color:#065F46;background:#D1FAE5;}
+.zh-c{color:#92400E;background:#FEF3C7;}
+.zh-d{color:#5B21B6;background:#EDE9FE;}
+.zh-e{color:#9D174D;background:#FCE7F3;}
 .vrow{display:flex;align-items:center;gap:0;margin-bottom:2px;width:100%;}
 .rl{font-size:10px;color:#9CA3AF;width:24px;text-align:right;flex-shrink:0;padding-right:4px;}
 .vzone{display:flex;}
@@ -57,9 +65,15 @@ h1{font-size:17px;font-weight:600;color:#1a365d;margin-bottom:.75rem;display:fle
 .sa{background:#E6F1FB;border-color:#85B7EB;color:#185FA5;}
 .sb{background:#E1F5EE;border-color:#5DCAA5;color:#0F6E56;}
 .sc{background:#FAEEDA;border-color:#EF9F27;color:#854F0B;}
+.sd{background:#F3E8FF;border-color:#C084FC;color:#7E22CE;}
+.se{background:#FCE7F3;border-color:#F472B6;color:#BE185D;}
+
 .sa.filled{background:#378ADD;border-color:#185FA5;color:#fff;cursor:grab;}
 .sb.filled{background:#1D9E75;border-color:#0F6E56;color:#fff;cursor:grab;}
 .sc.filled{background:#BA7517;border-color:#854F0B;color:#fff;cursor:grab;}
+.sd.filled{background:#9333EA;border-color:#6B21A8;color:#fff;cursor:grab;}
+.se.filled{background:#DB2777;border-color:#9D174D;color:#fff;cursor:grab;}
+
 .seat.filled:active{cursor:grabbing;}
 .seat.drag-over{transform:scale(1.2);box-shadow:0 0 0 3px #F59E0B;z-index:5;}
 .seat.drag-src{opacity:.35;}
@@ -100,6 +114,13 @@ select.gs{font-size:12px;width:100%;padding:6px 8px;border-radius:6px;border:0.5
 .tag-btn.occ-btn.active{background:#6366F1;color:#fff;}
 .modal-close{width:100%;padding:10px;background:#F3F4F6;color:#374151;border:none;border-radius:10px;font-size:13px;cursor:pointer;margin-top:4px;}
 #dtt{position:fixed;pointer-events:none;z-index:9999;background:#1e293b;color:#fff;font-size:12px;padding:5px 10px;border-radius:6px;white-space:nowrap;display:none;max-width:220px;overflow:hidden;}
+
+/* ── 架構設定 Modal 專屬樣式 ── */
+.layout-form { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+.layout-form label { font-size: 12px; font-weight: 600; color: #4B5563; }
+.layout-form input, .layout-form select { font-size: 14px; padding: 10px; border-radius: 8px; border: 1px solid #D1D5DB; background: #F9FAFB; width: 100%; outline: none; }
+.layout-form input:focus, .layout-form select:focus { border-color: #3B82F6; }
+.hint-text { font-size: 10px; color: #9CA3AF; margin-top: 4px; }
 </style>
 </head>
 <body>
@@ -127,6 +148,50 @@ select.gs{font-size:12px;width:100%;padding:6px 8px;border-radius:6px;border:0.5
   </div>
 </div>
 
+<div class="modal-bg" id="layout-modal-bg" onclick="closeLayoutBg(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-code">⚙️ 建立座位庫架構</div>
+    <div class="modal-name" style="background:#FFFBEB; color:#B45309;">注意：這將會由前台直接覆寫 Firebase 裡的座位結構 (seats_master2026)。同 ID 的座位名單會保留，不會影響已報到的狀態。</div>
+    
+    <div class="layout-form">
+      <div>
+        <label>排版模式</label>
+        <select id="l-mode" onchange="toggleLayoutMode()">
+          <option value="grid">方陣排排坐 (如 COMPUTEX 典禮)</option>
+          <option value="round">圓桌晚宴</option>
+        </select>
+      </div>
+
+      <div id="l-grid-settings">
+        <div style="margin-bottom: 12px;">
+          <label>總排數</label>
+          <input type="number" id="l-rows" value="10" min="1">
+        </div>
+        <div>
+          <label>各區座位數 (由左至右)</label>
+          <input type="text" id="l-zones" value="6,9,6" placeholder="例如: 6,9,6 或 10,10">
+          <div class="hint-text">請用半形逗號分隔，數字代表該區一排有幾個位子。例如輸入 6,9,6 代表分 A,B,C 三區。</div>
+        </div>
+      </div>
+
+      <div id="l-round-settings" style="display: none;">
+        <div style="margin-bottom: 12px;">
+          <label>總桌數</label>
+          <input type="number" id="l-tables" value="12" min="1">
+        </div>
+        <div>
+          <label>每桌人數 (椅數)</label>
+          <input type="number" id="l-seats" value="10" min="1">
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" style="width:100%; padding:12px; font-size:14px;" onclick="applyLayoutToDB()">套用並寫入資料庫</button>
+    <button class="modal-close" onclick="closeLayoutModal()">取消</button>
+  </div>
+</div>
+
 <h1>🎟 2026 前台座位系統
   <div class="sync-dot off" id="sync-dot"></div>
   <span class="sync-lbl" id="sync-lbl">連線中...</span>
@@ -139,8 +204,9 @@ select.gs{font-size:12px;width:100%;padding:6px 8px;border-radius:6px;border:0.5
     <div class="stat"><span class="sv" id="sg">0</span><span class="sl">賓客</span></div>
   </div>
   <div class="btns">
+    <button class="btn btn-setting" onclick="openLayoutModal()">⚙️ 架構設定</button>
     <button class="btn btn-ex" id="exbtn" onclick="doExport()">⬇ 匯出 XLSX</button>
-    <button class="btn btn-rst" onclick="doReset()">⚠️ 重置清除</button>
+    <button class="btn btn-rst" onclick="doReset()">⚠️ 重置</button>
   </div>
 </div>
 <div class="pbar"><div class="pfill" id="pf" style="width:0%"></div></div>
@@ -194,7 +260,7 @@ let layoutMode = 'grid'; // 'grid' 或 'round'
 const seatMap={}, asgn={}, tags={}, occupied={};
 const guests=[];
 let dragGuest=null, dragFrom=null, masterLoaded=false, saveTimer=null;
-let modalCode=null; // 現在統一使用 code (例如 A1-1 或 T1-1) 當作 ID
+let modalCode=null; 
 const dtt=document.getElementById('dtt');
 
 function setSyncStatus(s){
@@ -213,13 +279,13 @@ onValue(masterRef,snap=>{
   if(keys.length > 0) {
     Object.entries(d).forEach(([c,n])=>seatMap[c]=n);
     
-    // 自動判定排版模式：如果有 T 開頭的代碼，判定為圓桌
+    // 自動判定排版模式
     layoutMode = keys.some(k => k.toUpperCase().startsWith('T')) ? 'round' : 'grid';
     
     rebuildGuests();
     buildVenue(keys); // 重建畫布
   } else {
-      document.getElementById('vr').innerHTML = '<div style="text-align:center; padding: 20px; color: #9CA3AF;">請先在 seats_master2026 匯入座位表資料</div>';
+      document.getElementById('vr').innerHTML = '<div style="text-align:center; padding: 40px; color: #9CA3AF;">目前資料庫中沒有座位結構。<br><br>請點擊右上角「⚙️ 架構設定」建立座位地圖。</div>';
   }
   
   masterLoaded=true; setSyncStatus('ok'); refreshAll();
@@ -227,7 +293,6 @@ onValue(masterRef,snap=>{
   setSyncStatus('error');
 });
 
-// 因為 ID 已經統一，讀取 assignment 直接存入 asgn
 onValue(assignRef,snap=>{
   const d=snap.val()||{};
   Object.keys(asgn).forEach(k=>delete asgn[k]);
@@ -257,16 +322,13 @@ function rebuildGuests(){
 }
 
 // ── 儲存到 Firebase ──
-// 寫入變得超簡單！直接把物件丟給 Firebase
 async function saveAll(){
   setSyncStatus('saving');
   try{
     await set(assignRef, Object.keys(asgn).length ? asgn : null);
     await set(tagsRef, Object.keys(tags).length ? tags : null);
-    
     const oo={}; Object.keys(occupied).forEach(k => oo[k] = '佔用');
     await set(occRef, Object.keys(oo).length ? oo : null);
-    
     setSyncStatus('ok');
   }catch(e){setSyncStatus('error');toast('儲存失敗','ter');}
 }
@@ -282,7 +344,7 @@ function buildVenue(keys){
   if (layoutMode === 'round') {
       buildRoundVenue(keys, wrap);
   } else {
-      buildGridVenue(wrap);
+      buildGridVenue(keys, wrap);
   }
 }
 
@@ -292,7 +354,6 @@ function buildRoundVenue(keys, wrap) {
     const container = document.createElement('div');
     container.className = 'round-container';
     
-    // 依據桌號分組： 'T1-1' -> 桌號 'T1'
     const tables = {};
     keys.forEach(k => {
         const tCode = k.split('-')[0]; 
@@ -310,20 +371,17 @@ function buildRoundVenue(keys, wrap) {
         tWrap.appendChild(center);
 
         const totalSeats = seatCodes.length;
-        const radius = 75; // 圓半徑
+        const radius = 75; 
         
-        // 排序座位，讓 1 號在最上方
         seatCodes.sort((a, b) => parseInt(a.split('-')[1]) - parseInt(b.split('-')[1]));
 
         seatCodes.forEach((code, index) => {
             const el = document.createElement('div');
-            // 給予交替的顏色 class 以區分空位
             el.className = 'seat round-seat s' + (index%3===0?'a':index%3===1?'b':'c'); 
             el.id = 's-' + code;
             el.dataset.id = code;
             el.title = code;
             
-            // 三角函數計算環繞
             const angle = (index * (360 / totalSeats) - 90) * (Math.PI / 180);
             const x = 75 - 15 + radius * Math.cos(angle);
             const y = 75 - 15 + radius * Math.sin(angle);
@@ -338,48 +396,99 @@ function buildRoundVenue(keys, wrap) {
     wrap.appendChild(container);
 }
 
-// 渲染：方陣排排坐模式 (相容你原本的 10 排 3 區)
-function buildGridVenue(wrap) {
-    document.querySelector('.stage').textContent = 'STAGE / 舞台 (方陣模式)';
+// 渲染：完全動態的方陣排排坐模式
+function buildGridVenue(keys, wrap) {
+    document.querySelector('.stage').textContent = 'STAGE / 舞台 (方陣排座模式)';
     
-    const ZS=[6,9,6], ZK=['A','B','C'];
-    const rowLabelW=24, gapW=12;
-    const availW = document.getElementById('venue-wrap').clientWidth - 32;
-    const seatW = Math.floor((availW-rowLabelW-gapW*2)/21);
+    let maxRow = 0;
+    const zoneSet = new Set();
+    const maxSeatPerZone = {};
 
-    // 標題列
-    const hdr = document.createElement('div'); hdr.className = 'zone-header-row';
-    hdr.innerHTML = `<div style="width:${rowLabelW}px;flex-shrink:0;"></div>
-                     <div class="zh zh-a" style="width:${seatW*6}px;flex-shrink:0;">A 區（左）</div>
-                     <div style="width:${gapW}px;flex-shrink:0;"></div>
-                     <div class="zh zh-b" style="width:${seatW*9}px;flex-shrink:0;">B 區（中）</div>
-                     <div style="width:${gapW}px;flex-shrink:0;"></div>
-                     <div class="zh zh-c" style="width:${seatW*6}px;flex-shrink:0;">C 區（右）</div>`;
+    keys.forEach(k => {
+        const match = k.match(/^([A-Za-z]+)(\d+)-(\d+)$/);
+        if (match) {
+            const z = match[1].toUpperCase();
+            const r = parseInt(match[2], 10);
+            const s = parseInt(match[3], 10);
+            
+            zoneSet.add(z);
+            if (r > maxRow) maxRow = r;
+            if (!maxSeatPerZone[z] || s > maxSeatPerZone[z]) maxSeatPerZone[z] = s;
+        }
+    });
+
+    const zones = Array.from(zoneSet).sort(); 
+    if(zones.length === 0) return;
+
+    let totalCols = 0;
+    zones.forEach(z => totalCols += maxSeatPerZone[z]);
+
+    const rowLabelW = 24, gapW = 12;
+    const availW = document.getElementById('venue-wrap').clientWidth - 32;
+    // 避免座寬太小
+    const calculatedSeatW = Math.floor((availW - rowLabelW - gapW * (zones.length - 1)) / totalCols);
+    const seatW = calculatedSeatW > 12 ? calculatedSeatW : 12; 
+
+    // 動態標題列
+    const hdr = document.createElement('div');
+    hdr.className = 'zone-header-row';
+    let hdrHTML = `<div style="width:${rowLabelW}px;flex-shrink:0;"></div>`;
+    zones.forEach((z, i) => {
+        if (i > 0) hdrHTML += `<div style="width:${gapW}px;flex-shrink:0;"></div>`;
+        const colorClass = ['zh-a', 'zh-b', 'zh-c', 'zh-d', 'zh-e'][i % 5];
+        hdrHTML += `<div class="zh ${colorClass}" style="width:${seatW * maxSeatPerZone[z]}px;flex-shrink:0;">${z} 區</div>`;
+    });
+    hdr.innerHTML = hdrHTML;
     wrap.appendChild(hdr);
 
-    for(let r=0;r<10;r++){
-      const row = document.createElement('div'); row.className='vrow';
-      const lbl = document.createElement('div'); lbl.className='rl'; lbl.style.width=rowLabelW+'px'; lbl.textContent=r+1; row.appendChild(lbl);
-      for(let z=0;z<3;z++){
-        if(z>0){const a=document.createElement('div');a.style.width=gapW+'px';a.style.flexShrink=0;row.appendChild(a);}
-        const zone=document.createElement('div'); zone.className='vzone';
-        for(let s=1;s<=ZS[z];s++){
-          const code = ZK[z]+(r+1)+'-'+s;
-          const el=document.createElement('div');
-          el.className='seat s'+ZK[z].toLowerCase();
-          el.style.width=seatW+'px';
-          el.id='s-'+code; el.dataset.id=code; el.title=code;
-          
-          attachSeatEvents(el, code);
-          zone.appendChild(el);
-        }
-        row.appendChild(zone);
-      }
-      wrap.appendChild(row);
+    // 動態排數
+    for (let r = 1; r <= maxRow; r++) {
+        const row = document.createElement('div');
+        row.className = 'vrow';
+        
+        const lbl = document.createElement('div');
+        lbl.className = 'rl';
+        lbl.style.width = rowLabelW + 'px';
+        lbl.textContent = r;
+        row.appendChild(lbl);
+
+        zones.forEach((z, i) => {
+            if (i > 0) {
+                const a = document.createElement('div');
+                a.style.width = gapW + 'px';
+                a.style.flexShrink = 0;
+                row.appendChild(a);
+            }
+            const zoneDiv = document.createElement('div');
+            zoneDiv.className = 'vzone';
+
+            const seatsInThisZone = maxSeatPerZone[z];
+            for (let s = 1; s <= seatsInThisZone; s++) {
+                const code = `${z}${r}-${s}`;
+                const el = document.createElement('div');
+                
+                const colorClass = ['sa', 'sb', 'sc', 'sd', 'se'][i % 5];
+                el.className = `seat ${colorClass}`;
+                el.style.width = seatW + 'px';
+                el.id = 's-' + code;
+                el.dataset.id = code;
+                el.title = code;
+
+                // 如果 Firebase 沒有此座位，設為透明 (畸零地支援)
+                if (!keys.includes(code)) {
+                    el.style.opacity = '0';
+                    el.style.pointerEvents = 'none'; 
+                } else {
+                    attachSeatEvents(el, code);
+                }
+                zoneDiv.appendChild(el);
+            }
+            row.appendChild(zoneDiv);
+        });
+        wrap.appendChild(row);
     }
 }
 
-// 綁定拖曳與點擊事件
 function attachSeatEvents(el, code) {
     el.draggable=false;
     el.onclick=()=>openModal(code);
@@ -413,7 +522,7 @@ function chipDrag(chip,g){
   chip.addEventListener('dragend',()=>{chip.classList.remove('dragging');dragGuest=null;dragFrom=null;hideTip();clearDO();});
 }
 
-// ── 彈出視窗 ──
+// ── 座位設定 Modal ──
 function openModal(code){
   modalCode=code;
   const g=asgn[code]||'', occ=occupied[code], tag=tags[code]||'';
@@ -474,6 +583,64 @@ window.toggleOccupied=function(){
   refreshAll();scheduleSave();openModal(modalCode);
 };
 
+// ── ⚙️ 新增：架構產生器相關邏輯 ──
+window.openLayoutModal = function() { document.getElementById('layout-modal-bg').classList.add('show'); }
+window.closeLayoutBg = function(e) { if(e.target === document.getElementById('layout-modal-bg')) closeLayoutModal(); }
+window.closeLayoutModal = function() { document.getElementById('layout-modal-bg').classList.remove('show'); }
+
+window.toggleLayoutMode = function() {
+    const mode = document.getElementById('l-mode').value;
+    document.getElementById('l-grid-settings').style.display = mode === 'grid' ? 'block' : 'none';
+    document.getElementById('l-round-settings').style.display = mode === 'round' ? 'block' : 'none';
+}
+
+window.applyLayoutToDB = async function() {
+    if(!confirm("⚠️ 警告：這將會直接覆寫資料庫裡的座位結構！\n\n同 ID 座位的名單會保留，但縮小規模可能導致部分座位消失。\n確定要執行嗎？")) return;
+    
+    const mode = document.getElementById('l-mode').value;
+    const newMaster = {};
+    const ZK = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']; // 支援最多 8 區
+
+    if (mode === 'grid') {
+        const rows = parseInt(document.getElementById('l-rows').value, 10);
+        const zonesInput = document.getElementById('l-zones').value;
+        const zones = zonesInput.split(',').map(n => parseInt(n.trim(), 10)).filter(n => !isNaN(n));
+        
+        if(zones.length === 0) { alert("區塊設定錯誤，請重新輸入！"); return; }
+        
+        for (let r = 1; r <= rows; r++) {
+            for (let z = 0; z < zones.length; z++) {
+                for (let s = 1; s <= zones[z]; s++) {
+                    const code = `${ZK[z]}${r}-${s}`;
+                    // 如果原本資料庫就有這個座位，把裡面的名字保留；否則給空字串
+                    newMaster[code] = seatMap[code] || ""; 
+                }
+            }
+        }
+    } else if (mode === 'round') {
+        const tables = parseInt(document.getElementById('l-tables').value, 10);
+        const seats = parseInt(document.getElementById('l-seats').value, 10);
+        
+        for (let t = 1; t <= tables; t++) {
+            for (let s = 1; s <= seats; s++) {
+                const code = `T${t}-${s}`;
+                newMaster[code] = seatMap[code] || "";
+            }
+        }
+    }
+
+    setSyncStatus('saving');
+    try {
+        await set(masterRef, newMaster); // 🌟 覆寫 Firebase 裡的 seats_master2026
+        toast('🎉 座位架構已成功更新並同步！', 'tok');
+        closeLayoutModal();
+    } catch (e) {
+        setSyncStatus('error');
+        toast('架構更新失敗，請檢查網路。', 'ter');
+    }
+}
+
+
 // ── 畫面更新邏輯 ──
 function refreshAll(){renderSeats();updateStats();renderChips();}
 function renderSeats(){
@@ -482,7 +649,6 @@ function renderSeats(){
     if(!el) return;
     const g=asgn[code], occ=occupied[code], tag=tags[code];
     
-    // 移除舊的狀態 class，保留基本樣式
     el.classList.remove('occupied', 'ceremony', 'photo', 'filled');
     
     if(occ) el.classList.add('occupied');
@@ -492,7 +658,6 @@ function renderSeats(){
     
     el.draggable=!!(g||occ);
     
-    // 圓桌因為比較小，只顯示頭文字或數字
     if(layoutMode === 'round') {
        el.textContent = occ?'占':g?(g.trim()[0]||'?'): code.split('-')[1];
     } else {
@@ -531,80 +696,4 @@ window.renderChips=function renderChips(){
 
     document.getElementById('uc-count').textContent=(foundSeats.length+unassignedMatches.length)+' 筆結果';
 
-    if(!foundSeats.length&&!unassignedMatches.length){
-      box.innerHTML='<div style="font-size:11px;color:#9CA3AF;padding:4px;">找不到符合的賓客</div>';
-      return;
-    }
-    foundSeats.forEach(({code,name})=>{
-      const chip=document.createElement('span'); chip.className='chip'; chip.style.cssText='background:#FEFCE8;border-color:#CA8A04;color:#713F12;';
-      chip.textContent=name;
-      const badge=document.createElement('span'); badge.style.cssText='font-size:9px;background:#FDE047;color:#713F12;padding:1px 5px;border-radius:4px;margin-left:5px;font-weight:700;';
-      badge.textContent=code; chip.appendChild(badge);
-      chip.onclick=()=>{
-        const el=document.getElementById('s-'+code);
-        if(el){el.scrollIntoView({behavior:'smooth',block:'center'}); el.style.outline='3px solid #CA8A04';setTimeout(()=>el.style.outline='',1500);}
-      };
-      box.appendChild(chip);
-    });
-    unassignedMatches.forEach(g=>{
-      const chip=document.createElement('span');chip.className='chip';chip.textContent=g;
-      chip.onclick=()=>{
-        if(modalCode&&!occupied[modalCode]){asgn[modalCode]=g;delete occupied[modalCode];refreshAll();scheduleSave();openModal(modalCode);}
-        else toast('請先點選一個座位','ter');
-      };
-      const xBtn=document.createElement('button');xBtn.className='chip-x';xBtn.textContent='✕';
-      xBtn.onclick=e=>{e.stopPropagation();removeGuest(g);};
-      chip.appendChild(xBtn);chipDrag(chip,g);box.appendChild(chip);
-    });
-    return;
-  }
-
-  let list=guests.filter(g=>!aset.has(g));
-  document.getElementById('uc-count').textContent=list.length+' 未分配';
-  if(!list.length){box.innerHTML='<div style="font-size:11px;color:#9CA3AF;padding:4px;">🎉 所有賓客皆已分配！</div>';return;}
-  list.forEach(g=>{
-    const chip=document.createElement('span');chip.className='chip';chip.textContent=g;
-    chip.onclick=()=>{
-      if(modalCode&&!occupied[modalCode]){asgn[modalCode]=g;delete occupied[modalCode];refreshAll();scheduleSave();openModal(modalCode);}
-      else toast('請先點選一個座位','ter');
-    };
-    const xBtn=document.createElement('button');xBtn.className='chip-x';xBtn.textContent='✕';
-    xBtn.onclick=e=>{e.stopPropagation();removeGuest(g);};
-    chip.appendChild(xBtn);chipDrag(chip,g);box.appendChild(chip);
-  });
-}
-function removeGuest(g){
-  const idx=guests.indexOf(g);if(idx===-1)return;guests.splice(idx,1);
-  Object.entries(asgn).forEach(([c,n])=>{if(n===g){delete asgn[c];delete tags[c];}});
-  refreshAll();scheduleSave();toast('已移除：'+g.substring(0,15)+'...','tin');
-}
-window.addGuest=function(){
-  const inp=document.getElementById('gi');
-  const n=inp.value.trim();
-  if(!n)return toast('請輸入賓客名稱','ter');
-  if(guests.includes(n))return toast('此賓客已在名單中','ter');
-  guests.push(n); guests.sort(); inp.value=''; refreshAll(); toast('已新增','tok');
-};
-window.doReset=function(){
-  if(!confirm('確定要清除所有分配、標記和佔用嗎？'))return;
-  Object.keys(asgn).forEach(k=>delete asgn[k]);
-  Object.keys(tags).forEach(k=>delete tags[k]);
-  Object.keys(occupied).forEach(k=>delete occupied[k]);
-  refreshAll();scheduleSave();
-};
-
-window.doExport=function(){ toast('請使用右上方匯出功能','tin'); }
-
-function clearDO(){document.querySelectorAll('.drag-over').forEach(el=>el.classList.remove('drag-over'));}
-function showTip(e,t){dtt.textContent=t;dtt.style.display='block';moveTip(e);}
-function moveTip(e){dtt.style.left=(e.clientX+14)+'px';dtt.style.top=(e.clientY-28)+'px';}
-function hideTip(){dtt.style.display='none';}
-document.addEventListener('dragover',e=>{if(dragGuest||dragFrom)moveTip(e);});
-function toast(msg,cls){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+cls;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',2800);}
-
-window.addEventListener('resize', () => {
-    if(Object.keys(seatMap).length > 0) buildVenue(Object.keys(seatMap));
-});
-</script>
-</body>
-</html>
+    if(!foundSeats.length&&!unassignedMatches.length
