@@ -258,11 +258,15 @@ const fb=initializeApp({
     messagingSenderId: "111696785290",
     appId: "1:111696785290:web:41a67c52f1a3363ab7e273"
 });
-const db=getDatabase(fb);
-const masterRef=ref(db,'seats_master2026');
-const assignRef=ref(db,'assignments2026');
-const tagsRef=ref(db,'tags2026');
-const occRef=ref(db,'seats2026');
+// --- 在這裡設定你的專案代號 ---
+const PROJECT_ID = "event_A"; // 只要改這裡！例如改成 "event_B" 或 "dinner_2026"
+// -----------------------------
+
+// 將路徑改為加上 PROJECT_ID 的格式
+const masterRef = ref(db, PROJECT_ID + '/seats_master2026');
+const assignRef = ref(db, PROJECT_ID + '/assignments2026');
+const tagsRef   = ref(db, PROJECT_ID + '/tags2026');
+const occRef    = ref(db, PROJECT_ID + '/seats2026');
 
 // ── 狀態管理 ──
 let layoutMode = 'grid'; // 'grid' 或 'round'
