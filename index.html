@@ -116,8 +116,8 @@ select.gs{font-size:12px;width:100%;padding:6px 8px;border-radius:6px;border:0.5
 #dtt{position:fixed;pointer-events:none;z-index:9999;background:#1e293b;color:#fff;font-size:12px;padding:5px 10px;border-radius:6px;white-space:nowrap;display:none;max-width:220px;overflow:hidden;}
 
 /* ── 架構設定 Modal 專屬樣式 ── */
-.layout-form { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
-.layout-form label { font-size: 12px; font-weight: 600; color: #4B5563; }
+.layout-form { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; text-align: left; }
+.layout-form label { font-size: 12px; font-weight: 600; color: #4B5563; margin-bottom: 4px; display: block; }
 .layout-form input, .layout-form select { font-size: 14px; padding: 10px; border-radius: 8px; border: 1px solid #D1D5DB; background: #F9FAFB; width: 100%; outline: none; }
 .layout-form input:focus, .layout-form select:focus { border-color: #3B82F6; }
 .hint-text { font-size: 10px; color: #9CA3AF; margin-top: 4px; }
@@ -148,7 +148,7 @@ select.gs{font-size:12px;width:100%;padding:6px 8px;border-radius:6px;border:0.5
   </div>
 </div>
 
-<div class="modal-bg" id="layout-modal-bg" onclick="closeLayoutBg(event)">
+<div class="modal-bg" id="layout-modal-bg">
   <div class="modal">
     <div class="modal-handle"></div>
     <div class="modal-code">⚙️ 建立座位庫架構</div>
@@ -157,7 +157,7 @@ select.gs{font-size:12px;width:100%;padding:6px 8px;border-radius:6px;border:0.5
     <div class="layout-form">
       <div>
         <label>排版模式</label>
-        <select id="l-mode" onchange="toggleLayoutMode()">
+        <select id="l-mode">
           <option value="grid">方陣排排坐 (如 COMPUTEX 典禮)</option>
           <option value="round">圓桌晚宴</option>
         </select>
@@ -187,8 +187,8 @@ select.gs{font-size:12px;width:100%;padding:6px 8px;border-radius:6px;border:0.5
       </div>
     </div>
 
-    <button class="btn btn-primary" style="width:100%; padding:12px; font-size:14px;" onclick="applyLayoutToDB()">套用並寫入資料庫</button>
-    <button class="modal-close" onclick="closeLayoutModal()">取消</button>
+    <button class="btn btn-primary" id="btn-layout-apply" style="width:100%; padding:12px; font-size:14px;">套用並寫入資料庫</button>
+    <button class="modal-close" id="btn-layout-close">取消</button>
   </div>
 </div>
 
@@ -204,7 +204,7 @@ select.gs{font-size:12px;width:100%;padding:6px 8px;border-radius:6px;border:0.5
     <div class="stat"><span class="sv" id="sg">0</span><span class="sl">賓客</span></div>
   </div>
   <div class="btns">
-    <button class="btn btn-setting" onclick="openLayoutModal()">⚙️ 架構設定</button>
+    <button class="btn btn-setting" id="btn-setting">⚙️ 架構設定</button>
     <button class="btn btn-ex" id="exbtn" onclick="doExport()">⬇ 匯出 XLSX</button>
     <button class="btn btn-rst" onclick="doReset()">⚠️ 重置</button>
   </div>
@@ -248,7 +248,16 @@ select.gs{font-size:12px;width:100%;padding:6px 8px;border-radius:6px;border:0.5
 import{initializeApp}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import{getDatabase,ref,onValue,set}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
 
-const fb=initializeApp({apiKey:"AIzaSyB9H0Pc0_ecOmbF0zvwBW2S0JNQnn4lefg",authDomain:"computex20260602.firebaseapp.com",databaseURL:"https://computex20260602-default-rtdb.firebaseio.com",projectId:"computex20260602",storageBucket:"computex20260602.firebasestorage.app"});
+// 🌟 已經將被刪除的金鑰 (messagingSenderId 與 appId) 完整補回
+const fb=initializeApp({
+    apiKey: "AIzaSyB9H0Pc0_ecOmbF0zvwBW2S0JNQnn4lefg",
+    authDomain: "computex20260602.firebaseapp.com",
+    databaseURL: "https://computex20260602-default-rtdb.firebaseio.com",
+    projectId: "computex20260602",
+    storageBucket: "computex20260602.firebasestorage.app",
+    messagingSenderId: "111696785290",
+    appId: "1:111696785290:web:41a67c52f1a3363ab7e273"
+});
 const db=getDatabase(fb);
 const masterRef=ref(db,'seats_master2026');
 const assignRef=ref(db,'assignments2026');
@@ -425,7 +434,6 @@ function buildGridVenue(keys, wrap) {
 
     const rowLabelW = 24, gapW = 12;
     const availW = document.getElementById('venue-wrap').clientWidth - 32;
-    // 避免座寬太小
     const calculatedSeatW = Math.floor((availW - rowLabelW - gapW * (zones.length - 1)) / totalCols);
     const seatW = calculatedSeatW > 12 ? calculatedSeatW : 12; 
 
@@ -523,7 +531,7 @@ function chipDrag(chip,g){
 }
 
 // ── 座位設定 Modal ──
-function openModal(code){
+window.openModal = function(code){
   modalCode=code;
   const g=asgn[code]||'', occ=occupied[code], tag=tags[code]||'';
   
@@ -583,23 +591,33 @@ window.toggleOccupied=function(){
   refreshAll();scheduleSave();openModal(modalCode);
 };
 
-// ── ⚙️ 新增：架構產生器相關邏輯 ──
-window.openLayoutModal = function() { document.getElementById('layout-modal-bg').classList.add('show'); }
-window.closeLayoutBg = function(e) { if(e.target === document.getElementById('layout-modal-bg')) closeLayoutModal(); }
-window.closeLayoutModal = function() { document.getElementById('layout-modal-bg').classList.remove('show'); }
+// ── ⚙️ 架構產生器相關邏輯 (已修改為更穩定的寫法) ──
+document.getElementById('btn-setting').addEventListener('click', () => {
+    document.getElementById('layout-modal-bg').classList.add('show');
+});
 
-window.toggleLayoutMode = function() {
-    const mode = document.getElementById('l-mode').value;
+document.getElementById('btn-layout-close').addEventListener('click', () => {
+    document.getElementById('layout-modal-bg').classList.remove('show');
+});
+
+document.getElementById('layout-modal-bg').addEventListener('click', (e) => {
+    if(e.target === document.getElementById('layout-modal-bg')) {
+        document.getElementById('layout-modal-bg').classList.remove('show');
+    }
+});
+
+document.getElementById('l-mode').addEventListener('change', (e) => {
+    const mode = e.target.value;
     document.getElementById('l-grid-settings').style.display = mode === 'grid' ? 'block' : 'none';
     document.getElementById('l-round-settings').style.display = mode === 'round' ? 'block' : 'none';
-}
+});
 
-window.applyLayoutToDB = async function() {
+document.getElementById('btn-layout-apply').addEventListener('click', async () => {
     if(!confirm("⚠️ 警告：這將會直接覆寫資料庫裡的座位結構！\n\n同 ID 座位的名單會保留，但縮小規模可能導致部分座位消失。\n確定要執行嗎？")) return;
     
     const mode = document.getElementById('l-mode').value;
     const newMaster = {};
-    const ZK = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']; // 支援最多 8 區
+    const ZK = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
     if (mode === 'grid') {
         const rows = parseInt(document.getElementById('l-rows').value, 10);
@@ -612,7 +630,6 @@ window.applyLayoutToDB = async function() {
             for (let z = 0; z < zones.length; z++) {
                 for (let s = 1; s <= zones[z]; s++) {
                     const code = `${ZK[z]}${r}-${s}`;
-                    // 如果原本資料庫就有這個座位，把裡面的名字保留；否則給空字串
                     newMaster[code] = seatMap[code] || ""; 
                 }
             }
@@ -631,14 +648,14 @@ window.applyLayoutToDB = async function() {
 
     setSyncStatus('saving');
     try {
-        await set(masterRef, newMaster); // 🌟 覆寫 Firebase 裡的 seats_master2026
+        await set(masterRef, newMaster);
         toast('🎉 座位架構已成功更新並同步！', 'tok');
-        closeLayoutModal();
+        document.getElementById('layout-modal-bg').classList.remove('show');
     } catch (e) {
         setSyncStatus('error');
         toast('架構更新失敗，請檢查網路。', 'ter');
     }
-}
+});
 
 
 // ── 畫面更新邏輯 ──
@@ -696,4 +713,80 @@ window.renderChips=function renderChips(){
 
     document.getElementById('uc-count').textContent=(foundSeats.length+unassignedMatches.length)+' 筆結果';
 
-    if(!foundSeats.length&&!unassignedMatches.length
+    if(!foundSeats.length&&!unassignedMatches.length){
+      box.innerHTML='<div style="font-size:11px;color:#9CA3AF;padding:4px;">找不到符合的賓客</div>';
+      return;
+    }
+    foundSeats.forEach(({code,name})=>{
+      const chip=document.createElement('span'); chip.className='chip'; chip.style.cssText='background:#FEFCE8;border-color:#CA8A04;color:#713F12;';
+      chip.textContent=name;
+      const badge=document.createElement('span'); badge.style.cssText='font-size:9px;background:#FDE047;color:#713F12;padding:1px 5px;border-radius:4px;margin-left:5px;font-weight:700;';
+      badge.textContent=code; chip.appendChild(badge);
+      chip.onclick=()=>{
+        const el=document.getElementById('s-'+code);
+        if(el){el.scrollIntoView({behavior:'smooth',block:'center'}); el.style.outline='3px solid #CA8A04';setTimeout(()=>el.style.outline='',1500);}
+      };
+      box.appendChild(chip);
+    });
+    unassignedMatches.forEach(g=>{
+      const chip=document.createElement('span');chip.className='chip';chip.textContent=g;
+      chip.onclick=()=>{
+        if(modalCode&&!occupied[modalCode]){asgn[modalCode]=g;delete occupied[modalCode];refreshAll();scheduleSave();openModal(modalCode);}
+        else toast('請先點選一個座位','ter');
+      };
+      const xBtn=document.createElement('button');xBtn.className='chip-x';xBtn.textContent='✕';
+      xBtn.onclick=e=>{e.stopPropagation();removeGuest(g);};
+      chip.appendChild(xBtn);chipDrag(chip,g);box.appendChild(chip);
+    });
+    return;
+  }
+
+  let list=guests.filter(g=>!aset.has(g));
+  document.getElementById('uc-count').textContent=list.length+' 未分配';
+  if(!list.length){box.innerHTML='<div style="font-size:11px;color:#9CA3AF;padding:4px;">🎉 所有賓客皆已分配！</div>';return;}
+  list.forEach(g=>{
+    const chip=document.createElement('span');chip.className='chip';chip.textContent=g;
+    chip.onclick=()=>{
+      if(modalCode&&!occupied[modalCode]){asgn[modalCode]=g;delete occupied[modalCode];refreshAll();scheduleSave();openModal(modalCode);}
+      else toast('請先點選一個座位','ter');
+    };
+    const xBtn=document.createElement('button');xBtn.className='chip-x';xBtn.textContent='✕';
+    xBtn.onclick=e=>{e.stopPropagation();removeGuest(g);};
+    chip.appendChild(xBtn);chipDrag(chip,g);box.appendChild(chip);
+  });
+}
+function removeGuest(g){
+  const idx=guests.indexOf(g);if(idx===-1)return;guests.splice(idx,1);
+  Object.entries(asgn).forEach(([c,n])=>{if(n===g){delete asgn[c];delete tags[c];}});
+  refreshAll();scheduleSave();toast('已移除：'+g.substring(0,15)+'...','tin');
+}
+window.addGuest=function(){
+  const inp=document.getElementById('gi');
+  const n=inp.value.trim();
+  if(!n)return toast('請輸入賓客名稱','ter');
+  if(guests.includes(n))return toast('此賓客已在名單中','ter');
+  guests.push(n); guests.sort(); inp.value=''; refreshAll(); toast('已新增','tok');
+};
+window.doReset=function(){
+  if(!confirm('確定要清除所有分配、標記和佔用嗎？\n(這不會影響已建立的座位庫架構)'))return;
+  Object.keys(asgn).forEach(k=>delete asgn[k]);
+  Object.keys(tags).forEach(k=>delete tags[k]);
+  Object.keys(occupied).forEach(k=>delete occupied[k]);
+  refreshAll();scheduleSave();
+};
+
+window.doExport=function(){ toast('請使用右上方匯出功能','tin'); }
+
+function clearDO(){document.querySelectorAll('.drag-over').forEach(el=>el.classList.remove('drag-over'));}
+function showTip(e,t){dtt.textContent=t;dtt.style.display='block';moveTip(e);}
+function moveTip(e){dtt.style.left=(e.clientX+14)+'px';dtt.style.top=(e.clientY-28)+'px';}
+function hideTip(){dtt.style.display='none';}
+document.addEventListener('dragover',e=>{if(dragGuest||dragFrom)moveTip(e);});
+function toast(msg,cls){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+cls;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',2800);}
+
+window.addEventListener('resize', () => {
+    if(Object.keys(seatMap).length > 0) buildVenue(Object.keys(seatMap));
+});
+</script>
+</body>
+</html>
